@@ -2,6 +2,8 @@ import React, { useState, useEffect } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
 import { Flame, Calendar, Target, Zap } from 'lucide-react'
 
+const API_BASE_URL = import.meta.env.VITE_API_BASE_URL || 'https://neurolearn-6c0k.onrender.com';
+
 export default function StreakIndicator({ userId, token, className = '' }) {
   const [streaks, setStreaks] = useState({})
   const [loading, setLoading] = useState(true)
@@ -13,7 +15,7 @@ export default function StreakIndicator({ userId, token, className = '' }) {
 
   const fetchStreakData = async () => {
     try {
-      const response = await fetch('/api/gamification/status', {
+      const response = await fetch(`${API_BASE_URL}/api/gamification/status`, {
         headers: {
           'Authorization': `Bearer ${token}`,
           'Content-Type': 'application/json'

@@ -2,6 +2,8 @@ import React, { useState, useEffect } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
 import { Sword, Shield, Crown, Star, Clock, CheckCircle, Play, Plus } from 'lucide-react'
 
+const API_BASE_URL = import.meta.env.VITE_API_BASE_URL || 'https://neurolearn-6c0k.onrender.com';
+
 export default function QuestBoard({ userId, token, className = '' }) {
   const [quests, setQuests] = useState([])
   const [activeQuests, setActiveQuests] = useState([])
@@ -15,13 +17,13 @@ export default function QuestBoard({ userId, token, className = '' }) {
   const fetchQuests = async () => {
     try {
       const [availableResponse, activeResponse] = await Promise.all([
-        fetch('/api/quests/', {
+        fetch(`${API_BASE_URL}/api/quests/`, {
           headers: {
             'Authorization': `Bearer ${token}`,
             'Content-Type': 'application/json'
           }
         }),
-        fetch('/api/quests/active', {
+        fetch(`${API_BASE_URL}/api/quests/active`, {
           headers: {
             'Authorization': `Bearer ${token}`,
             'Content-Type': 'application/json'
@@ -44,7 +46,7 @@ export default function QuestBoard({ userId, token, className = '' }) {
 
   const startQuest = async (questId) => {
     try {
-      const response = await fetch('/api/quests/start', {
+      const response = await fetch(`${API_BASE_URL}/api/quests/start`, {
         method: 'POST',
         headers: {
           'Authorization': `Bearer ${token}`,

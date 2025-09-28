@@ -2,6 +2,8 @@ import React, { useState, useEffect } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
 import { X, Star, Trophy, Crown, Zap, Shield, Sword, Target } from 'lucide-react'
 
+const API_BASE_URL = import.meta.env.VITE_API_BASE_URL || 'https://neurolearn-6c0k.onrender.com';
+
 export default function BadgeModal({ isOpen, onClose, userId, token }) {
   const [badges, setBadges] = useState([])
   const [loading, setLoading] = useState(true)
@@ -16,7 +18,7 @@ export default function BadgeModal({ isOpen, onClose, userId, token }) {
 
   const fetchBadges = async () => {
     try {
-      const response = await fetch('/api/gamification/badges', {
+      const response = await fetch(`${API_BASE_URL}/api/gamification/badges`, {
         headers: {
           'Authorization': `Bearer ${token}`,
           'Content-Type': 'application/json'
