@@ -1,0 +1,27 @@
+<!doctype html>
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <title>Emotion Capture Vanilla Example</title>
+  </head>
+  <body>
+    <label>
+      <input id="optIn" type="checkbox" /> Enable emotion detection (opt-in)
+    </label>
+    <script type="module">
+      import { createEmotionCapture } from '../frontend/ai-tutor/emotion-integration.js';
+      const state = { jwt: null, optIn: false };
+      const capture = createEmotionCapture({
+        intervalMs: 7000,
+        getToken: () => state.jwt,
+        getOptIn: () => state.optIn,
+      });
+      document.getElementById('optIn').addEventListener('change', (e) => {
+        state.optIn = e.target.checked;
+        if (state.optIn) capture.start(); else capture.stop();
+      });
+    </script>
+  </body>
+  </html>
+
+

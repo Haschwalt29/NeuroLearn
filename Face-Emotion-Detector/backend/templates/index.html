@@ -1,0 +1,462 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Face Emotion Detector</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+        }
+
+        .container {
+            background: white;
+            border-radius: 20px;
+            box-shadow: 0 20px 40px rgba(0,0,0,0.1);
+            padding: 40px;
+            max-width: 800px;
+            width: 100%;
+        }
+
+        .header {
+            text-align: center;
+            margin-bottom: 40px;
+        }
+
+        .header h1 {
+            color: #333;
+            font-size: 2.5em;
+            margin-bottom: 10px;
+        }
+
+        .header p {
+            color: #666;
+            font-size: 1.1em;
+        }
+
+        .upload-section {
+            margin-bottom: 30px;
+        }
+
+        .upload-area {
+            border: 3px dashed #ddd;
+            border-radius: 15px;
+            padding: 40px;
+            text-align: center;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            background: #fafafa;
+        }
+
+        .upload-area:hover {
+            border-color: #667eea;
+            background: #f0f4ff;
+        }
+
+        .upload-area.dragover {
+            border-color: #667eea;
+            background: #e8f2ff;
+        }
+
+        .upload-icon {
+            font-size: 3em;
+            color: #667eea;
+            margin-bottom: 20px;
+        }
+
+        .upload-text {
+            font-size: 1.2em;
+            color: #666;
+            margin-bottom: 20px;
+        }
+
+        .file-input {
+            display: none;
+        }
+
+        .btn {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            border: none;
+            padding: 12px 30px;
+            border-radius: 25px;
+            font-size: 1em;
+            cursor: pointer;
+            transition: transform 0.2s ease;
+        }
+
+        .btn:hover {
+            transform: translateY(-2px);
+        }
+
+        .camera-section {
+            margin-bottom: 30px;
+        }
+
+        .camera-container {
+            position: relative;
+            border-radius: 15px;
+            overflow: hidden;
+            background: #000;
+        }
+
+        #video {
+            width: 100%;
+            height: 400px;
+            object-fit: cover;
+        }
+
+        .camera-controls {
+            position: absolute;
+            bottom: 20px;
+            left: 50%;
+            transform: translateX(-50%);
+            display: flex;
+            gap: 10px;
+        }
+
+        .camera-btn {
+            background: rgba(255,255,255,0.9);
+            color: #333;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 20px;
+            cursor: pointer;
+            font-weight: bold;
+        }
+
+        .result-section {
+            margin-top: 30px;
+            padding: 20px;
+            background: #f8f9fa;
+            border-radius: 15px;
+            display: none;
+        }
+
+        .result-section.show {
+            display: block;
+        }
+
+        .emotion-display {
+            text-align: center;
+            margin-bottom: 20px;
+        }
+
+        .emotion-text {
+            font-size: 2em;
+            font-weight: bold;
+            color: #333;
+            margin-bottom: 10px;
+        }
+
+        .confidence-text {
+            font-size: 1.2em;
+            color: #666;
+        }
+
+        .emotion-bars {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
+            gap: 10px;
+            margin-top: 20px;
+        }
+
+        .emotion-bar {
+            text-align: center;
+        }
+
+        .emotion-label {
+            font-size: 0.9em;
+            color: #666;
+            margin-bottom: 5px;
+        }
+
+        .bar-container {
+            background: #e0e0e0;
+            border-radius: 10px;
+            height: 20px;
+            overflow: hidden;
+        }
+
+        .bar-fill {
+            height: 100%;
+            background: linear-gradient(90deg, #667eea, #764ba2);
+            border-radius: 10px;
+            transition: width 0.5s ease;
+        }
+
+        .bar-value {
+            font-size: 0.8em;
+            color: #333;
+            margin-top: 5px;
+        }
+
+        .loading {
+            text-align: center;
+            padding: 20px;
+            color: #666;
+        }
+
+        .spinner {
+            border: 3px solid #f3f3f3;
+            border-top: 3px solid #667eea;
+            border-radius: 50%;
+            width: 30px;
+            height: 30px;
+            animation: spin 1s linear infinite;
+            margin: 0 auto 10px;
+        }
+
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        .error {
+            background: #ffebee;
+            color: #c62828;
+            padding: 15px;
+            border-radius: 10px;
+            margin-top: 20px;
+            display: none;
+        }
+
+        .error.show {
+            display: block;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>😊 Face Emotion Detector</h1>
+            <p>Upload an image or use your camera to detect emotions using AI</p>
+            <div style="margin-top: 20px;">
+                <a href="/realtime" class="btn" style="text-decoration: none; display: inline-block; margin: 0 10px;">
+                    📹 Real-time Detection
+                </a>
+                <a href="/" class="btn" style="text-decoration: none; display: inline-block; margin: 0 10px; background: #6c757d;">
+                    📁 Upload Images
+                </a>
+            </div>
+        </div>
+
+        <div class="upload-section">
+            <div class="upload-area" onclick="document.getElementById('fileInput').click()">
+                <div class="upload-icon">📁</div>
+                <div class="upload-text">Click to upload an image or drag and drop</div>
+                <input type="file" id="fileInput" class="file-input" accept="image/*">
+                <button class="btn">Choose File</button>
+            </div>
+        </div>
+
+        <div class="camera-section">
+            <h3 style="text-align: center; margin-bottom: 20px; color: #333;">Or use your camera</h3>
+            <div class="camera-container">
+                <video id="video" autoplay></video>
+                <div class="camera-controls">
+                    <button class="camera-btn" id="startCamera">Start Camera</button>
+                    <button class="camera-btn" id="captureBtn" style="display: none;">Capture & Analyze</button>
+                    <button class="camera-btn" id="stopCamera" style="display: none;">Stop Camera</button>
+                </div>
+            </div>
+        </div>
+
+        <div class="result-section" id="resultSection">
+            <div class="emotion-display">
+                <div class="emotion-text" id="emotionText">Happy</div>
+                <div class="confidence-text" id="confidenceText">95.2% confidence</div>
+            </div>
+            <div class="emotion-bars" id="emotionBars"></div>
+        </div>
+
+        <div class="loading" id="loading" style="display: none;">
+            <div class="spinner"></div>
+            <div>Analyzing emotion...</div>
+        </div>
+
+        <div class="error" id="error"></div>
+    </div>
+
+    <script>
+        let stream = null;
+        let canvas = null;
+
+        // File upload handling
+        document.getElementById('fileInput').addEventListener('change', function(e) {
+            const file = e.target.files[0];
+            if (file) {
+                analyzeImage(file);
+            }
+        });
+
+        // Drag and drop handling
+        const uploadArea = document.querySelector('.upload-area');
+        
+        uploadArea.addEventListener('dragover', function(e) {
+            e.preventDefault();
+            uploadArea.classList.add('dragover');
+        });
+
+        uploadArea.addEventListener('dragleave', function(e) {
+            e.preventDefault();
+            uploadArea.classList.remove('dragover');
+        });
+
+        uploadArea.addEventListener('drop', function(e) {
+            e.preventDefault();
+            uploadArea.classList.remove('dragover');
+            const file = e.dataTransfer.files[0];
+            if (file && file.type.startsWith('image/')) {
+                analyzeImage(file);
+            }
+        });
+
+        // Camera handling
+        document.getElementById('startCamera').addEventListener('click', startCamera);
+        document.getElementById('stopCamera').addEventListener('click', stopCamera);
+        document.getElementById('captureBtn').addEventListener('click', captureAndAnalyze);
+
+        function startCamera() {
+            navigator.mediaDevices.getUserMedia({ video: true })
+                .then(function(mediaStream) {
+                    stream = mediaStream;
+                    document.getElementById('video').srcObject = stream;
+                    document.getElementById('startCamera').style.display = 'none';
+                    document.getElementById('captureBtn').style.display = 'inline-block';
+                    document.getElementById('stopCamera').style.display = 'inline-block';
+                })
+                .catch(function(err) {
+                    showError('Could not access camera: ' + err.message);
+                });
+        }
+
+        function stopCamera() {
+            if (stream) {
+                stream.getTracks().forEach(track => track.stop());
+                stream = null;
+                document.getElementById('video').srcObject = null;
+                document.getElementById('startCamera').style.display = 'inline-block';
+                document.getElementById('captureBtn').style.display = 'none';
+                document.getElementById('stopCamera').style.display = 'none';
+            }
+        }
+
+        function captureAndAnalyze() {
+            const video = document.getElementById('video');
+            const canvas = document.createElement('canvas');
+            const ctx = canvas.getContext('2d');
+            
+            canvas.width = video.videoWidth;
+            canvas.height = video.videoHeight;
+            ctx.drawImage(video, 0, 0);
+            
+            canvas.toBlob(function(blob) {
+                analyzeImage(blob);
+            }, 'image/jpeg');
+        }
+
+        function analyzeImage(file) {
+            showLoading();
+            hideError();
+            hideResult();
+
+            const formData = new FormData();
+            formData.append('file', file);
+
+            fetch('/upload', {
+                method: 'POST',
+                body: formData
+            })
+            .then(response => response.json())
+            .then(data => {
+                hideLoading();
+                if (data.success) {
+                    showResult(data);
+                } else {
+                    showError(data.error || 'Analysis failed');
+                }
+            })
+            .catch(error => {
+                hideLoading();
+                showError('Error: ' + error.message);
+            });
+        }
+
+        function showResult(data) {
+            const resultSection = document.getElementById('resultSection');
+            const emotionText = document.getElementById('emotionText');
+            const confidenceText = document.getElementById('confidenceText');
+            const emotionBars = document.getElementById('emotionBars');
+
+            // Update emotion display
+            emotionText.textContent = data.dominant_emotion.charAt(0).toUpperCase() + data.dominant_emotion.slice(1);
+            confidenceText.textContent = data.confidence.toFixed(1) + '% confidence';
+
+            // Update emotion bars
+            emotionBars.innerHTML = '';
+            for (const [emotion, value] of Object.entries(data.emotions)) {
+                const barContainer = document.createElement('div');
+                barContainer.className = 'emotion-bar';
+                
+                const label = document.createElement('div');
+                label.className = 'emotion-label';
+                label.textContent = emotion.charAt(0).toUpperCase() + emotion.slice(1);
+                
+                const barDiv = document.createElement('div');
+                barDiv.className = 'bar-container';
+                
+                const barFill = document.createElement('div');
+                barFill.className = 'bar-fill';
+                barFill.style.width = value + '%';
+                
+                const barValue = document.createElement('div');
+                barValue.className = 'bar-value';
+                barValue.textContent = value.toFixed(1) + '%';
+                
+                barDiv.appendChild(barFill);
+                barContainer.appendChild(label);
+                barContainer.appendChild(barDiv);
+                barContainer.appendChild(barValue);
+                emotionBars.appendChild(barContainer);
+            }
+
+            resultSection.classList.add('show');
+        }
+
+        function showLoading() {
+            document.getElementById('loading').style.display = 'block';
+        }
+
+        function hideLoading() {
+            document.getElementById('loading').style.display = 'none';
+        }
+
+        function showError(message) {
+            const errorDiv = document.getElementById('error');
+            errorDiv.textContent = message;
+            errorDiv.classList.add('show');
+        }
+
+        function hideError() {
+            document.getElementById('error').classList.remove('show');
+        }
+
+        function hideResult() {
+            document.getElementById('resultSection').classList.remove('show');
+        }
+    </script>
+</body>
+</html>

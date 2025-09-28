@@ -1,0 +1,155 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AI Tutor - Emotion-Adaptive Learning</title>
+    <link rel="stylesheet" href="styles.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+</head>
+<body>
+    <div class="app-container">
+        <!-- Header -->
+        <header class="app-header">
+            <div class="header-content">
+                <div class="logo">
+                    <i class="fas fa-brain"></i>
+                    <span>AI Tutor</span>
+                </div>
+                <div class="header-stats">
+                    <div class="stat-item">
+                        <i class="fas fa-clock"></i>
+                        <span id="sessionTime">00:00</span>
+                    </div>
+                    <div class="stat-item">
+                        <i class="fas fa-chart-line"></i>
+                        <span id="progress">0%</span>
+                    </div>
+                </div>
+            </div>
+        </header>
+
+        <!-- Main Content -->
+        <main class="main-content">
+            <!-- Emotion Detection Panel -->
+            <section class="emotion-panel">
+                <div class="panel-header">
+                    <h3><i class="fas fa-heart"></i> Emotion Analysis</h3>
+                    <div class="emotion-status" id="emotionStatus">
+                        <span class="status-dot"></span>
+                        <span>Analyzing...</span>
+                    </div>
+                </div>
+                
+                <div class="emotion-detector-container">
+                    <video id="emotionVideo" autoplay muted playsinline></video>
+                    <div class="emotion-overlay" id="emotionOverlay">
+                        <div class="emotion-icon" id="emotionIcon">😊</div>
+                        <div class="emotion-text" id="emotionText">Happy</div>
+                        <div class="emotion-confidence" id="emotionConfidence">85%</div>
+                    </div>
+                    <div class="detection-controls">
+                        <button id="startDetection" class="btn btn-primary">
+                            <i class="fas fa-play"></i> Start Analysis
+                        </button>
+                        <button id="stopDetection" class="btn btn-secondary" disabled>
+                            <i class="fas fa-pause"></i> Pause
+                        </button>
+                    </div>
+                </div>
+
+                <div class="emotion-details" id="emotionDetails">
+                    <h4>Emotion Breakdown</h4>
+                    <div class="emotion-bars" id="emotionBars"></div>
+                </div>
+            </section>
+
+            <!-- Learning Content -->
+            <section class="learning-content">
+                <div class="content-header">
+                    <h2 id="lessonTitle">Welcome to AI-Powered Learning</h2>
+                    <div class="difficulty-indicator">
+                        <span>Difficulty:</span>
+                        <div class="difficulty-level" id="difficultyLevel">
+                            <div class="level-bar"></div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="content-body">
+                    <div class="lesson-content" id="lessonContent">
+                        <div class="welcome-message">
+                            <i class="fas fa-graduation-cap"></i>
+                            <h3>Ready to Start Learning?</h3>
+                            <p>Our AI tutor will analyze your emotions and adapt the learning experience to help you succeed!</p>
+                            <button class="btn btn-primary btn-large" id="startLearning">
+                                <i class="fas fa-rocket"></i> Begin Learning Journey
+                            </button>
+                        </div>
+                    </div>
+
+                    <div class="learning-controls">
+                        <button class="btn btn-outline" id="prevLesson">
+                            <i class="fas fa-chevron-left"></i> Previous
+                        </button>
+                        <button class="btn btn-primary" id="nextLesson">
+                            Next <i class="fas fa-chevron-right"></i>
+                        </button>
+                    </div>
+                </div>
+            </section>
+
+            <!-- AI Insights Panel -->
+            <section class="insights-panel">
+                <div class="panel-header">
+                    <h3><i class="fas fa-robot"></i> AI Insights</h3>
+                </div>
+                
+                <div class="insights-content">
+                    <div class="insight-card" id="currentInsight">
+                        <div class="insight-icon">
+                            <i class="fas fa-lightbulb"></i>
+                        </div>
+                        <div class="insight-text">
+                            <h4>Learning Tip</h4>
+                            <p>I notice you're feeling confident! Let's try a more challenging concept.</p>
+                        </div>
+                    </div>
+
+                    <div class="adaptation-log" id="adaptationLog">
+                        <h4>Recent Adaptations</h4>
+                        <div class="log-entries" id="logEntries">
+                            <div class="log-entry">
+                                <span class="log-time">2 min ago</span>
+                                <span class="log-action">Increased difficulty due to high confidence</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+        </main>
+
+        <!-- Progress Modal -->
+        <div class="modal" id="progressModal">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h3>Learning Progress</h3>
+                    <button class="modal-close" id="closeModal">
+                        <i class="fas fa-times"></i>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <div class="progress-chart" id="progressChart">
+                        <!-- Progress visualization will be inserted here -->
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Scripts -->
+    <script src="emotion-integration.js"></script>
+    <script src="app.js"></script>
+</body>
+</html>

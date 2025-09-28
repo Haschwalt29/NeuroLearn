@@ -1,0 +1,243 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Emotion Detection - Vanilla JS Integration</title>
+    <link rel="stylesheet" href="../emotion-integration.css">
+    <style>
+        body {
+            margin: 0;
+            padding: 20px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+        
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+        }
+        
+        .header {
+            text-align: center;
+            color: white;
+            margin-bottom: 40px;
+        }
+        
+        .header h1 {
+            font-size: 2.5em;
+            margin-bottom: 10px;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>😊 Emotion Detection</h1>
+            <p>Easy integration into any existing app</p>
+        </div>
+        
+        <!-- This is all you need to add to your existing app -->
+        <div id="emotionDetector"></div>
+    </div>
+
+    <script src="../emotion-integration.js"></script>
+    <script>
+        // Simple integration - just add this to your existing app
+        class EmotionDetectorWidget {
+            constructor(containerId, options = {}) {
+                this.container = document.getElementById(containerId);
+                this.options = {
+                    apiUrl: 'http://localhost:5000',
+                    detectionInterval: 1000,
+                    ...options
+                };
+                
+                this.detector = null;
+                this.isActive = false;
+                this.currentEmotion = null;
+                this.emotions = {};
+                this.fps = 0;
+                this.error = null;
+                
+                this.init();
+            }
+            
+            init() {
+                this.createHTML();
+                this.bindEvents();
+                this.initDetector();
+            }
+            
+            createHTML() {
+                this.container.innerHTML = `
+                    <div class="emotion-detector-container">
+                        <video id="emotionVideo" autoplay muted playsinline class="emotion-video"></video>
+                        <div id="emotionOverlay" class="emotion-overlay"></div>
+                    </div>
+                    
+                    <div class="emotion-controls">
+                        <button id="startBtn" class="emotion-btn emotion-btn-start">Start Camera</button>
+                        <button id="stopBtn" class="emotion-btn emotion-btn-stop" disabled>Stop Camera</button>
+                    </div>
+                    
+                    <div class="emotion-stats">
+                        <div class="emotion-stat">
+                            <span class="emotion-stat-value" id="fpsCounter">0</span>
+                            <span class="emotion-stat-label">FPS</span>
+                        </div>
+                        <div class="emotion-stat">
+                            <span class="emotion-stat-value" id="emotionCounter">-</span>
+                            <span class="emotion-stat-label">Emotion</span>
+                        </div>
+                    </div>
+                    
+                    <div id="emotionBars" class="emotion-bars" style="display: none;">
+                        <h4>Emotion Analysis</h4>
+                        <div id="emotionBarsContainer"></div>
+                    </div>
+                    
+                    <div id="emotionError" class="emotion-error" style="display: none;"></div>
+                `;
+            }
+            
+            bindEvents() {
+                document.getElementById('startBtn').addEventListener('click', () => this.startCamera());
+                document.getElementById('stopBtn').addEventListener('click', () => this.stopCamera());
+            }
+            
+            initDetector() {
+                this.detector = new EmotionDetectorIntegration({
+                    apiUrl: this.options.apiUrl,
+                    detectionInterval: this.options.detectionInterval,
+                    onEmotionDetected: (data) => {
+                        this.currentEmotion = data.dominant_emotion;
+                        this.emotions = data.emotions;
+                        this.updateDisplay();
+                        this.options.onEmotionDetected?.(data);
+                    },
+                    onError: (err) => {
+                        this.error = err.message;
+                        this.showError(err.message);
+                    }
+                });
+            }
+            
+            async startCamera() {
+                const video = document.getElementById('emotionVideo');
+                const success = await this.detector.startCamera(video);
+                
+                if (success) {
+                    this.isActive = true;
+                    document.getElementById('startBtn').disabled = true;
+                    document.getElementById('stopBtn').disabled = false;
+                    this.hideError();
+                }
+            }
+            
+            stopCamera() {
+                this.detector.stopCamera();
+                this.isActive = false;
+                this.currentEmotion = null;
+                this.emotions = {};
+                
+                document.getElementById('startBtn').disabled = false;
+                document.getElementById('stopBtn').disabled = true;
+                this.updateDisplay();
+            }
+            
+            updateDisplay() {
+                // Update emotion overlay
+                const overlay = document.getElementById('emotionOverlay');
+                if (this.currentEmotion) {
+                    const color = this.getEmotionColor(this.currentEmotion);
+                    overlay.textContent = this.currentEmotion.toUpperCase();
+                    overlay.style.color = color;
+                    overlay.style.borderColor = color;
+                    overlay.style.display = 'block';
+                } else {
+                    overlay.style.display = 'none';
+                }
+                
+                // Update stats
+                document.getElementById('fpsCounter').textContent = this.fps;
+                document.getElementById('emotionCounter').textContent = 
+                    this.currentEmotion ? this.currentEmotion.toUpperCase() : '-';
+                
+                // Update emotion bars
+                this.updateEmotionBars();
+            }
+            
+            updateEmotionBars() {
+                const barsContainer = document.getElementById('emotionBarsContainer');
+                const barsDiv = document.getElementById('emotionBars');
+                
+                if (this.currentEmotion) {
+                    barsDiv.style.display = 'block';
+                    barsContainer.innerHTML = '';
+                    
+                    Object.entries(this.emotions).forEach(([emotion, confidence]) => {
+                        const barDiv = document.createElement('div');
+                        barDiv.className = 'emotion-bar';
+                        
+                        barDiv.innerHTML = `
+                            <div class="emotion-bar-label">${emotion.charAt(0).toUpperCase() + emotion.slice(1)}</div>
+                            <div class="emotion-bar-container">
+                                <div class="emotion-bar-fill" style="width: ${confidence}%; background-color: ${this.getEmotionColor(emotion)}"></div>
+                            </div>
+                            <div class="emotion-bar-value">${confidence.toFixed(1)}%</div>
+                        `;
+                        
+                        barsContainer.appendChild(barDiv);
+                    });
+                } else {
+                    barsDiv.style.display = 'none';
+                }
+            }
+            
+            getEmotionColor(emotion) {
+                const colors = {
+                    angry: '#ff4444',
+                    disgust: '#44ff44',
+                    fear: '#ff44ff',
+                    happy: '#ffff44',
+                    sad: '#4444ff',
+                    surprise: '#44ffff',
+                    neutral: '#888888'
+                };
+                return colors[emotion] || '#ffffff';
+            }
+            
+            showError(message) {
+                const errorDiv = document.getElementById('emotionError');
+                errorDiv.textContent = message;
+                errorDiv.style.display = 'block';
+            }
+            
+            hideError() {
+                const errorDiv = document.getElementById('emotionError');
+                errorDiv.style.display = 'none';
+            }
+            
+            destroy() {
+                this.detector?.destroy();
+            }
+        }
+        
+        // Initialize the emotion detector
+        const emotionDetector = new EmotionDetectorWidget('emotionDetector', {
+            onEmotionDetected: (data) => {
+                console.log('Emotion detected:', data);
+                // Add your custom logic here
+            }
+        });
+        
+        // Clean up on page unload
+        window.addEventListener('beforeunload', () => {
+            emotionDetector.destroy();
+        });
+    </script>
+</body>
+</html>

@@ -1,0 +1,29 @@
+{
+  "name": "ai-tutor-frontend",
+  "version": "1.0.0",
+  "description": "AI Tutor with Emotion-Adaptive Learning",
+  "main": "index.html",
+  "scripts": {
+    "start": "python -m http.server 8080",
+    "dev": "python -m http.server 8080",
+    "build": "echo 'No build process needed for vanilla JS'",
+    "test": "echo 'No tests specified'"
+  },
+  "keywords": [
+    "ai",
+    "tutor",
+    "emotion-detection",
+    "adaptive-learning",
+    "education",
+    "machine-learning"
+  ],
+  "author": "AI Tutor Team",
+  "license": "MIT",
+  "dependencies": {},
+  "devDependencies": {},
+  "browserslist": [
+    "> 1%",
+    "last 2 versions",
+    "not dead"
+  ]
+}
