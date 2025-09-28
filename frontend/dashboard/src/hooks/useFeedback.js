@@ -118,7 +118,7 @@ export const useFeedback = (token) => {
       setLoading(true);
       setError(null);
 
-      const response = await fetch(`/api/feedback/history?limit=${limit}`, {
+      const response = await fetch(`${API_BASE_URL}/api/feedback/history?limit=${limit}`, {
         headers: {
           'Authorization': `Bearer ${token}`,
           'Content-Type': 'application/json'
@@ -201,7 +201,7 @@ export const useFeedback = (token) => {
       setLoading(true);
       setError(null);
 
-      const response = await fetch(`/api/feedback/milestone/${milestoneType}`, {
+      const response = await fetch(`${API_BASE_URL}/api/feedback/milestone/${milestoneType}`, {
         headers: {
           'Authorization': `Bearer ${token}`,
           'Content-Type': 'application/json'

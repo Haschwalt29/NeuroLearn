@@ -39,7 +39,7 @@ export const useLearningDNA = (token) => {
       setLoading(true);
       setError(null);
 
-      const response = await fetch(`/api/dna/profile/dna/${userId}`, {
+      const response = await fetch(`${API_BASE_URL}/api/dna/profile/dna/${userId}`, {
         headers: {
           'Authorization': `Bearer ${token}`,
           'Content-Type': 'application/json'
@@ -65,7 +65,7 @@ export const useLearningDNA = (token) => {
       setLoading(true);
       setError(null);
 
-      const response = await fetch(`/api/dna/profile/mastery/${userId}`, {
+      const response = await fetch(`${API_BASE_URL}/api/dna/profile/mastery/${userId}`, {
         headers: {
           'Authorization': `Bearer ${token}`,
           'Content-Type': 'application/json'
@@ -96,7 +96,7 @@ export const useLearningDNA = (token) => {
       if (options.topic) params.append('topic', options.topic);
       if (options.limit) params.append('limit', options.limit);
 
-      const response = await fetch(`/api/dna/profile/progress/${userId}?${params}`, {
+      const response = await fetch(`${API_BASE_URL}/api/dna/profile/progress/${userId}?${params}`, {
         headers: {
           'Authorization': `Bearer ${token}`,
           'Content-Type': 'application/json'
@@ -122,7 +122,7 @@ export const useLearningDNA = (token) => {
       setLoading(true);
       setError(null);
 
-      const response = await fetch(`/api/dna/profile/topic-history/${userId}/${encodeURIComponent(topic)}?days=${days}`, {
+      const response = await fetch(`${API_BASE_URL}/api/dna/profile/topic-history/${userId}/${encodeURIComponent(topic)}?days=${days}`, {
         headers: {
           'Authorization': `Bearer ${token}`,
           'Content-Type': 'application/json'
@@ -148,7 +148,7 @@ export const useLearningDNA = (token) => {
       setLoading(true);
       setError(null);
 
-      const response = await fetch(`/api/dna/badges/${userId}`, {
+      const response = await fetch(`${API_BASE_URL}/api/dna/badges/${userId}`, {
         headers: {
           'Authorization': `Bearer ${token}`,
           'Content-Type': 'application/json'
@@ -174,7 +174,7 @@ export const useLearningDNA = (token) => {
       setLoading(true);
       setError(null);
 
-      const response = await fetch(`/api/dna/stats/${userId}`, {
+      const response = await fetch(`${API_BASE_URL}/api/dna/stats/${userId}`, {
         headers: {
           'Authorization': `Bearer ${token}`,
           'Content-Type': 'application/json'

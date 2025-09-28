@@ -80,7 +80,7 @@ export const useStory = (token) => {
 
   const getStoryRewards = useCallback(async (storyId) => {
     try {
-      const response = await fetch(`/api/story/rewards?story_id=${storyId}`, {
+      const response = await fetch(`${API_BASE_URL}/api/story/rewards?story_id=${storyId}`, {
         headers: {
           'Authorization': `Bearer ${token}`,
           'Content-Type': 'application/json'
@@ -101,7 +101,7 @@ export const useStory = (token) => {
 
   const markRewardViewed = useCallback(async (rewardId) => {
     try {
-      const response = await fetch(`/api/story/rewards/${rewardId}/viewed`, {
+      const response = await fetch(`${API_BASE_URL}/api/story/rewards/${rewardId}/viewed`, {
         method: 'POST',
         headers: {
           'Authorization': `Bearer ${token}`,
@@ -122,7 +122,7 @@ export const useStory = (token) => {
 
   const getChapterDetails = useCallback(async (chapterId) => {
     try {
-      const response = await fetch(`/api/story/chapters/${chapterId}`, {
+      const response = await fetch(`${API_BASE_URL}/api/story/chapters/${chapterId}`, {
         headers: {
           'Authorization': `Bearer ${token}`,
           'Content-Type': 'application/json'
@@ -143,7 +143,7 @@ export const useStory = (token) => {
 
   const getQuestDetails = useCallback(async (questId) => {
     try {
-      const response = await fetch(`/api/story/quests/${questId}`, {
+      const response = await fetch(`${API_BASE_URL}/api/story/quests/${questId}`, {
         headers: {
           'Authorization': `Bearer ${token}`,
           'Content-Type': 'application/json'
@@ -167,7 +167,7 @@ export const useStory = (token) => {
       setLoading(true);
       setError(null);
 
-      const response = await fetch(`/api/story/stories/${storyId}/start`, {
+      const response = await fetch(`${API_BASE_URL}/api/story/stories/${storyId}/start`, {
         method: 'POST',
         headers: {
           'Authorization': `Bearer ${token}`,

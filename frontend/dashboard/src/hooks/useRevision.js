@@ -24,7 +24,7 @@ export const useRevision = (userId, token) => {
         overdue_only: overdueOnly.toString()
       });
 
-      const response = await fetch(`/api/revision/due?${params}`, {
+      const response = await fetch(`${API_BASE_URL}/api/revision/due?${params}`, {
         headers: {
           'Authorization': `Bearer ${token}`,
           'Content-Type': 'application/json'
@@ -58,7 +58,7 @@ export const useRevision = (userId, token) => {
         end: endDate.toISOString()
       });
 
-      const response = await fetch(`/api/revision/calendar?${params}`, {
+      const response = await fetch(`${API_BASE_URL}/api/revision/calendar?${params}`, {
         headers: {
           'Authorization': `Bearer ${token}`,
           'Content-Type': 'application/json'
@@ -272,7 +272,7 @@ export const useRevision = (userId, token) => {
       setLoading(true);
       setError(null);
 
-      const response = await fetch(`/api/revision/schedule/${contentId}`, {
+      const response = await fetch(`${API_BASE_URL}/api/revision/schedule/${contentId}`, {
         headers: {
           'Authorization': `Bearer ${token}`,
           'Content-Type': 'application/json'
@@ -300,7 +300,7 @@ export const useRevision = (userId, token) => {
       setLoading(true);
       setError(null);
 
-      const response = await fetch(`/api/revision/schedule/${contentId}`, {
+      const response = await fetch(`${API_BASE_URL}/api/revision/schedule/${contentId}`, {
         method: 'DELETE',
         headers: {
           'Authorization': `Bearer ${token}`,

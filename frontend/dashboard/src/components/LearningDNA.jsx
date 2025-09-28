@@ -16,7 +16,7 @@ const LearningDNA = ({ userId, token }) => {
   const fetchLearningDNAProfile = async () => {
     try {
       setLoading(true);
-      const response = await fetch(`/api/dna/profile/dna/${userId}`, {
+      const response = await fetch(`${API_BASE_URL}/api/dna/profile/dna/${userId}`, {
         headers: {
           'Authorization': `Bearer ${token}`,
           'Content-Type': 'application/json'
@@ -38,7 +38,7 @@ const LearningDNA = ({ userId, token }) => {
 
   const fetchTopicHistory = async (topic) => {
     try {
-      const response = await fetch(`/api/dna/profile/topic-history/${userId}/${encodeURIComponent(topic)}`, {
+      const response = await fetch(`${API_BASE_URL}/api/dna/profile/topic-history/${userId}/${encodeURIComponent(topic)}`, {
         headers: {
           'Authorization': `Bearer ${token}`,
           'Content-Type': 'application/json'
