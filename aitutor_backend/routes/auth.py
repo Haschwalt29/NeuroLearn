@@ -65,3 +65,9 @@ def me():
     return jsonify({"id": user.id, "email": user.email, "name": user.name, "role": user.role, "emotion_opt_in": user.emotion_opt_in})
 
 
+@auth_bp.get("/health")
+def health_check():
+    """Health check endpoint for Render deployment"""
+    return jsonify({"status": "healthy", "service": "neurolearn-backend"})
+
+

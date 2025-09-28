@@ -2,8 +2,8 @@ import React, { createContext, useContext, useState, useEffect } from 'react'
 import axios from 'axios'
 import toast from 'react-hot-toast'
 
-// Set the base URL for API calls
-axios.defaults.baseURL = 'http://localhost:8002'
+// Set base URL via Vite proxy (default to relative paths). Override with VITE_API_BASE_URL if provided.
+axios.defaults.baseURL = import.meta.env.VITE_API_BASE_URL || ''
 
 const AuthContext = createContext()
 

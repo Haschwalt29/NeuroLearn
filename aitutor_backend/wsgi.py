@@ -1,8 +1,11 @@
+import os
 from . import create_app, socketio
 
-app = create_app()
+# Create app with production config
+app = create_app(config_name="production")
 
 if __name__ == "__main__":
-    socketio.run(app, host="0.0.0.0", port=8002, debug=True)
+    port = int(os.environ.get("PORT", 8002))
+    socketio.run(app, host="0.0.0.0", port=port, debug=False)
 
 

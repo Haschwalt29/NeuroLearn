@@ -1,3 +1,4 @@
+import os
 from flask import Flask
 from flask_cors import CORS
 from flask_sqlalchemy import SQLAlchemy
@@ -14,7 +15,20 @@ def create_app(config_name: str = "development") -> Flask:
     app = Flask(__name__)
     app.config.from_object(get_config(config_name))
 
-    CORS(app)
+    # Configure CORS for production and development
+    allowed_origins = [
+        "http://localhost:3000", 
+        "http://127.0.0.1:3000",
+        "https://neurolearn-frontend.onrender.com",  # Update with your frontend URL
+        "https://neurolearn-dashboard.onrender.com"  # Update with your dashboard URL
+    ]
+    
+    # Add environment-specific origins
+    frontend_url = os.environ.get("FRONTEND_URL")
+    if frontend_url:
+        allowed_origins.append(frontend_url)
+    
+    CORS(app, origins=allowed_origins)
     db.init_app(app)
     jwt.init_app(app)
     socketio.init_app(app)

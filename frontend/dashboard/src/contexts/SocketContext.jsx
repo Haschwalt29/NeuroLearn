@@ -19,7 +19,7 @@ export function SocketProvider({ children }) {
 
   useEffect(() => {
     if (user) {
-      const newSocket = io('http://localhost:8002', {
+      const newSocket = io(import.meta.env.VITE_API_BASE_URL || '', {
         auth: {
           token: localStorage.getItem('token')
         }
