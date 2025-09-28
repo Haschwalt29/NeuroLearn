@@ -19,11 +19,11 @@ const LiveEmotionDetector = ({ onEmotionDetected, isEnabled = true }) => {
   const resultsBufferRef = useRef([]); // rolling window of recent results
   const lastUpdateRef = useRef(0); // timestamp of last committed UI update
 
-  // Smoothing parameters (can be exposed later in DevSettings)
-  const MIN_CONFIDENCE = 0.75; // Increased from 0.6 for more stability
-  const WINDOW_SIZE = 7; // Increased from 5 for more stability
-  const PERSISTENCE_REQUIRED = 3; // Increased from 2 for more stability
-  const MIN_CHANGE_INTERVAL_MS = 3000; // Increased from 1500ms to 3s for more stability
+  // Optimized smoothing parameters for faster response
+  const MIN_CONFIDENCE = 0.5; // Lowered for more sensitivity
+  const WINDOW_SIZE = 3; // Smaller window for faster response
+  const PERSISTENCE_REQUIRED = 1; // Only need 1 confident result for immediate update
+  const MIN_CHANGE_INTERVAL_MS = 500; // Reduced to 0.5s for much faster updates
 
   const emotionIcons = {
     happy: Smile,
@@ -137,7 +137,7 @@ const LiveEmotionDetector = ({ onEmotionDetected, isEnabled = true }) => {
       if (videoRef.current && isEnabled) {
         await detectEmotion();
       }
-    }, 2000); // Detect every 2 seconds for more stability
+    }, 500); // Detect every 0.5 seconds for much faster response
   };
 
   const stopEmotionDetection = () => {
@@ -216,19 +216,22 @@ const LiveEmotionDetector = ({ onEmotionDetected, isEnabled = true }) => {
           }
         }
 
-        // Only update UI/state when we have a stable result and debounce changes
+        // Update UI immediately for faster response - only debounce if same emotion
         const nowTs = Date.now();
-        if (stableEmotion && (nowTs - lastUpdateRef.current >= MIN_CHANGE_INTERVAL_MS || stableEmotion !== currentEmotion)) {
-          setCurrentEmotion(stableEmotion);
-          setConfidence(stableConfidence);
-          lastUpdateRef.current = nowTs;
+        if (stableEmotion) {
+          // Always update if emotion changed, or if enough time passed
+          if (stableEmotion !== currentEmotion || (nowTs - lastUpdateRef.current >= MIN_CHANGE_INTERVAL_MS)) {
+            setCurrentEmotion(stableEmotion);
+            setConfidence(stableConfidence);
+            lastUpdateRef.current = nowTs;
 
-          const timestamp = new Date().toLocaleTimeString();
-          const newEntry = { emotion: stableEmotion, confidence: stableConfidence, timestamp };
-          setEmotionHistory(prev => [newEntry, ...prev.slice(0, 9)]);
+            const timestamp = new Date().toLocaleTimeString();
+            const newEntry = { emotion: stableEmotion, confidence: stableConfidence, timestamp };
+            setEmotionHistory(prev => [newEntry, ...prev.slice(0, 9)]);
 
-          if (onEmotionDetected) {
-            onEmotionDetected({ emotion: stableEmotion, confidence: stableConfidence });
+            if (onEmotionDetected) {
+              onEmotionDetected({ emotion: stableEmotion, confidence: stableConfidence });
+            }
           }
         }
       } else {
