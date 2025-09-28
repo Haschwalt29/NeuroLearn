@@ -1,6 +1,8 @@
 import { useState, useEffect, useCallback } from 'react';
 import { useCoLearner } from './useCoLearner';
 
+const API_BASE_URL = import.meta.env.VITE_API_BASE_URL || 'https://neurolearn-6c0k.onrender.com';
+
 export const useFeedback = (token) => {
   const [currentFeedback, setCurrentFeedback] = useState(null);
   const [feedbackHistory, setFeedbackHistory] = useState([]);
@@ -13,7 +15,7 @@ export const useFeedback = (token) => {
       setLoading(true);
       setError(null);
 
-      const response = await fetch('/api/feedback/generate', {
+      const response = await fetch(`${API_BASE_URL}/api/feedback/generate`, {
         method: 'POST',
         headers: {
           'Authorization': `Bearer ${token}`,
@@ -42,7 +44,7 @@ export const useFeedback = (token) => {
       setLoading(true);
       setError(null);
 
-      const response = await fetch('/api/feedback/lesson/complete', {
+      const response = await fetch(`${API_BASE_URL}/api/feedback/lesson/complete`, {
         method: 'POST',
         headers: {
           'Authorization': `Bearer ${token}`,
@@ -79,7 +81,7 @@ export const useFeedback = (token) => {
       setLoading(true);
       setError(null);
 
-      const response = await fetch('/api/feedback/quiz/complete', {
+      const response = await fetch(`${API_BASE_URL}/api/feedback/quiz/complete`, {
         method: 'POST',
         headers: {
           'Authorization': `Bearer ${token}`,
@@ -143,7 +145,7 @@ export const useFeedback = (token) => {
       setLoading(true);
       setError(null);
 
-      const response = await fetch('/api/feedback/latest', {
+      const response = await fetch(`${API_BASE_URL}/api/feedback/latest`, {
         headers: {
           'Authorization': `Bearer ${token}`,
           'Content-Type': 'application/json'
@@ -173,7 +175,7 @@ export const useFeedback = (token) => {
       setLoading(true);
       setError(null);
 
-      const response = await fetch('/api/feedback/stats', {
+      const response = await fetch(`${API_BASE_URL}/api/feedback/stats`, {
         headers: {
           'Authorization': `Bearer ${token}`,
           'Content-Type': 'application/json'

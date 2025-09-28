@@ -1,6 +1,8 @@
 import { useState, useCallback } from 'react'
 import { useSocket } from '../contexts/SocketContext'
 
+const API_BASE_URL = import.meta.env.VITE_API_BASE_URL || 'https://neurolearn-6c0k.onrender.com';
+
 export const useCoLearner = (token) => {
   const [loading, setLoading] = useState(false)
   const [error, setError] = useState(null)
@@ -13,7 +15,7 @@ export const useCoLearner = (token) => {
       setLoading(true)
       setError(null)
 
-      const response = await fetch('/api/colearner/action', {
+      const response = await fetch(`${API_BASE_URL}/api/colearner/action`, {
         method: 'POST',
         headers: {
           'Authorization': `Bearer ${token}`,
@@ -54,7 +56,7 @@ export const useCoLearner = (token) => {
       setLoading(true)
       setError(null)
 
-      const response = await fetch('/api/colearner/action', {
+      const response = await fetch(`${API_BASE_URL}/api/colearner/action`, {
         method: 'POST',
         headers: {
           'Authorization': `Bearer ${token}`,
@@ -96,7 +98,7 @@ export const useCoLearner = (token) => {
       setLoading(true)
       setError(null)
 
-      const response = await fetch('/api/colearner/action', {
+      const response = await fetch(`${API_BASE_URL}/api/colearner/action`, {
         method: 'POST',
         headers: {
           'Authorization': `Bearer ${token}`,
@@ -132,7 +134,7 @@ export const useCoLearner = (token) => {
     if (!token) return
 
     try {
-      const response = await fetch('/api/colearner/mirror_emotion', {
+      const response = await fetch(`${API_BASE_URL}/api/colearner/mirror_emotion`, {
         method: 'POST',
         headers: {
           'Authorization': `Bearer ${token}`,

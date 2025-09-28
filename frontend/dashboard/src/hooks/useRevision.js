@@ -1,6 +1,8 @@
 import { useState, useEffect, useCallback } from 'react';
 import { useCoLearner } from './useCoLearner';
 
+const API_BASE_URL = import.meta.env.VITE_API_BASE_URL || 'https://neurolearn-6c0k.onrender.com';
+
 export const useRevision = (userId, token) => {
   const [dueReviews, setDueReviews] = useState([]);
   const [calendarData, setCalendarData] = useState({});
@@ -85,7 +87,7 @@ export const useRevision = (userId, token) => {
       setLoading(true);
       setError(null);
 
-      const response = await fetch('/api/revision/stats', {
+      const response = await fetch(`${API_BASE_URL}/api/revision/stats`, {
         headers: {
           'Authorization': `Bearer ${token}`,
           'Content-Type': 'application/json'
@@ -114,7 +116,7 @@ export const useRevision = (userId, token) => {
       setLoading(true);
       setError(null);
 
-      const response = await fetch('/api/revision/insights', {
+      const response = await fetch(`${API_BASE_URL}/api/revision/insights`, {
         headers: {
           'Authorization': `Bearer ${token}`,
           'Content-Type': 'application/json'
@@ -143,7 +145,7 @@ export const useRevision = (userId, token) => {
       setLoading(true);
       setError(null);
 
-      const response = await fetch('/api/revision/complete', {
+      const response = await fetch(`${API_BASE_URL}/api/revision/complete`, {
         method: 'POST',
         headers: {
           'Authorization': `Bearer ${token}`,
@@ -195,7 +197,7 @@ export const useRevision = (userId, token) => {
       setLoading(true);
       setError(null);
 
-      const response = await fetch('/api/revision/snooze', {
+      const response = await fetch(`${API_BASE_URL}/api/revision/snooze`, {
         method: 'POST',
         headers: {
           'Authorization': `Bearer ${token}`,
@@ -232,7 +234,7 @@ export const useRevision = (userId, token) => {
       setLoading(true);
       setError(null);
 
-      const response = await fetch('/api/revision/schedule', {
+      const response = await fetch(`${API_BASE_URL}/api/revision/schedule`, {
         method: 'POST',
         headers: {
           'Authorization': `Bearer ${token}`,
