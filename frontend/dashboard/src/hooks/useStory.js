@@ -1,5 +1,7 @@
 import { useState, useCallback } from 'react';
 
+const API_BASE_URL = import.meta.env.VITE_API_BASE_URL || 'https://neurolearn-6c0k.onrender.com';
+
 export const useStory = (token) => {
   const [storyData, setStoryData] = useState(null);
   const [loading, setLoading] = useState(false);
@@ -12,7 +14,7 @@ export const useStory = (token) => {
       setLoading(true);
       setError(null);
 
-      const response = await fetch('/api/story/current', {
+      const response = await fetch(`${API_BASE_URL}/api/story/current`, {
         headers: {
           'Authorization': `Bearer ${token}`,
           'Content-Type': 'application/json'
@@ -39,7 +41,7 @@ export const useStory = (token) => {
       setLoading(true);
       setError(null);
 
-      const response = await fetch('/api/story/progress', {
+      const response = await fetch(`${API_BASE_URL}/api/story/progress`, {
         method: 'POST',
         headers: {
           'Authorization': `Bearer ${token}`,

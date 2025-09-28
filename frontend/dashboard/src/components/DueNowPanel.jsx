@@ -2,6 +2,8 @@ import React, { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { Clock, Play, Calendar, AlertCircle, CheckCircle } from 'lucide-react';
 
+const API_BASE_URL = import.meta.env.VITE_API_BASE_URL || 'https://neurolearn-6c0k.onrender.com';
+
 const DueNowPanel = ({ userId, token }) => {
   const [dueReviews, setDueReviews] = useState([]);
   const [loading, setLoading] = useState(true);
@@ -16,7 +18,7 @@ const DueNowPanel = ({ userId, token }) => {
       setLoading(true);
       setError(null);
 
-      const response = await fetch('/api/revision/due?limit=3', {
+      const response = await fetch(`${API_BASE_URL}/api/revision/due?limit=3`, {
         headers: {
           'Authorization': `Bearer ${token}`,
           'Content-Type': 'application/json'
@@ -45,7 +47,7 @@ const DueNowPanel = ({ userId, token }) => {
 
   const snoozeReview = async (contentId, days = 1) => {
     try {
-      const response = await fetch('/api/revision/snooze', {
+      const response = await fetch(`${API_BASE_URL}/api/revision/snooze`, {
         method: 'POST',
         headers: {
           'Authorization': `Bearer ${token}`,

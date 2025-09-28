@@ -8,8 +8,11 @@ import {
   RotateCcw, 
   ArrowRight,
   Star,
+
   AlertCircle
 } from 'lucide-react';
+
+const API_BASE_URL = import.meta.env.VITE_API_BASE_URL || 'https://neurolearn-6c0k.onrender.com';
 
 const ReviewFlow = ({ userId, token, onComplete }) => {
   const [currentReview, setCurrentReview] = useState(null);
@@ -36,7 +39,7 @@ const ReviewFlow = ({ userId, token, onComplete }) => {
       setLoading(true);
       setError(null);
 
-      const response = await fetch('/api/revision/due?limit=1', {
+      const response = await fetch(`${API_BASE_URL}/api/revision/due?limit=1`, {
         headers: {
           'Authorization': `Bearer ${token}`,
           'Content-Type': 'application/json'
@@ -75,7 +78,7 @@ const ReviewFlow = ({ userId, token, onComplete }) => {
     setSubmitting(true);
 
     try {
-      const response = await fetch('/api/revision/complete', {
+      const response = await fetch(`${API_BASE_URL}/api/revision/complete`, {
         method: 'POST',
         headers: {
           'Authorization': `Bearer ${token}`,

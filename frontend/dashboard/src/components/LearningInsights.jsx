@@ -2,6 +2,8 @@ import React, { useState, useEffect } from 'react'
 import { motion } from 'framer-motion'
 import { TrendingUp, TrendingDown, Minus, Eye, Headphones, BookOpen, Target, AlertCircle, CheckCircle } from 'lucide-react'
 
+const API_BASE_URL = import.meta.env.VITE_API_BASE_URL || 'https://neurolearn-6c0k.onrender.com';
+
 export default function LearningInsights({ userId, token, className = '' }) {
   const [insights, setInsights] = useState(null)
   const [loading, setLoading] = useState(true)
@@ -12,7 +14,7 @@ export default function LearningInsights({ userId, token, className = '' }) {
 
   const fetchInsights = async () => {
     try {
-      const response = await fetch('/api/personalization/insights', {
+      const response = await fetch(`${API_BASE_URL}/api/personalization/insights`, {
         headers: {
           'Authorization': `Bearer ${token}`,
           'Content-Type': 'application/json'

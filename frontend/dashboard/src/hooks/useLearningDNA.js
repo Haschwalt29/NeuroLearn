@@ -1,5 +1,7 @@
 import { useState, useCallback } from 'react';
 
+const API_BASE_URL = import.meta.env.VITE_API_BASE_URL || 'https://neurolearn-6c0k.onrender.com';
+
 export const useLearningDNA = (token) => {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
@@ -9,7 +11,7 @@ export const useLearningDNA = (token) => {
       setLoading(true);
       setError(null);
 
-      const response = await fetch('/api/dna/profile/update', {
+      const response = await fetch(`${API_BASE_URL}/api/dna/profile/update`, {
         method: 'POST',
         headers: {
           'Authorization': `Bearer ${token}`,
@@ -198,7 +200,7 @@ export const useLearningDNA = (token) => {
       setLoading(true);
       setError(null);
 
-      const response = await fetch('/api/dna/leaderboard', {
+      const response = await fetch(`${API_BASE_URL}/api/dna/leaderboard`, {
         headers: {
           'Authorization': `Bearer ${token}`,
           'Content-Type': 'application/json'

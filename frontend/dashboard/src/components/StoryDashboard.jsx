@@ -8,9 +8,12 @@ import {
   Star, 
   Trophy,
   Play,
+
   Eye,
   Sparkles
 } from 'lucide-react';
+
+const API_BASE_URL = import.meta.env.VITE_API_BASE_URL || 'https://neurolearn-6c0k.onrender.com';
 
 const StoryDashboard = ({ userId, token }) => {
   const [storyData, setStoryData] = useState(null);
@@ -26,7 +29,7 @@ const StoryDashboard = ({ userId, token }) => {
   const fetchStoryData = async () => {
     try {
       setLoading(true);
-      const response = await fetch('/api/story/current', {
+      const response = await fetch(`${API_BASE_URL}/api/story/current`, {
         headers: {
           'Authorization': `Bearer ${token}`,
           'Content-Type': 'application/json'

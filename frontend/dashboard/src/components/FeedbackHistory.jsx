@@ -1,6 +1,8 @@
 import React, { useState, useEffect } from 'react';
 import { motion } from 'framer-motion';
 
+const API_BASE_URL = import.meta.env.VITE_API_BASE_URL || 'https://neurolearn-6c0k.onrender.com';
+
 const FeedbackHistory = ({ userId, token }) => {
   const [feedbackHistory, setFeedbackHistory] = useState([]);
   const [loading, setLoading] = useState(true);
@@ -13,7 +15,7 @@ const FeedbackHistory = ({ userId, token }) => {
   const fetchFeedbackHistory = async () => {
     try {
       setLoading(true);
-      const response = await fetch('/api/feedback/history', {
+      const response = await fetch(`${API_BASE_URL}/api/feedback/history`, {
         headers: {
           'Authorization': `Bearer ${token}`,
           'Content-Type': 'application/json'
