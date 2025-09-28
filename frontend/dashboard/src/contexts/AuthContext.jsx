@@ -37,9 +37,11 @@ export function AuthProvider({ children }) {
       const response = await axios.get('/api/auth/me')
       setUser(response.data)
     } catch (error) {
+      console.log('Auth token invalid, clearing storage')
       localStorage.removeItem('token')
       setToken(null)
       delete axios.defaults.headers.common['Authorization']
+      setUser(null)
     } finally {
       setLoading(false)
     }
