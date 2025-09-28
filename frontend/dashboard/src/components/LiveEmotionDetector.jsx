@@ -2,6 +2,8 @@ import React, { useState, useRef, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { Camera, CameraOff, Eye, Smile, Frown, Meh, AlertTriangle, Heart } from 'lucide-react';
 
+const API_BASE_URL = import.meta.env.VITE_API_BASE_URL || 'https://neurolearn-6c0k.onrender.com';
+
 const LiveEmotionDetector = ({ onEmotionDetected, isEnabled = true }) => {
   const videoRef = useRef(null);
   const canvasRef = useRef(null);
@@ -162,7 +164,7 @@ const LiveEmotionDetector = ({ onEmotionDetected, isEnabled = true }) => {
       const imageData = canvas.toDataURL('image/jpeg', 0.8);
       
       // Send to backend
-      const response = await fetch('/api/emotion', {
+      const response = await fetch(`${API_BASE_URL}/api/emotion`, {
         method: 'POST',
         headers: {
           'Authorization': `Bearer ${localStorage.getItem('token')}`,

@@ -3,6 +3,8 @@ import { useAuth } from './AuthContext'
 import { useSocket } from './SocketContext'
 import toast from 'react-hot-toast'
 
+const API_BASE_URL = import.meta.env.VITE_API_BASE_URL || 'https://neurolearn-6c0k.onrender.com';
+
 const EmotionContext = createContext()
 
 export function useEmotion() {
@@ -107,7 +109,7 @@ export function EmotionProvider({ children }) {
     const dataUrl = canvas.toDataURL('image/jpeg', 0.8)
     
     try {
-      const response = await fetch('/api/emotion', {
+      const response = await fetch(`${API_BASE_URL}/api/emotion`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -127,7 +129,7 @@ export function EmotionProvider({ children }) {
 
   const toggleEmotionOptIn = async (enabled) => {
     try {
-      const response = await fetch('/api/settings/', {
+      const response = await fetch(`${API_BASE_URL}/api/settings/`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
