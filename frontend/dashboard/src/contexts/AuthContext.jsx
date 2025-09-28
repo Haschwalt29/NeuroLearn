@@ -3,7 +3,7 @@ import axios from 'axios'
 import toast from 'react-hot-toast'
 
 // Set base URL via Vite proxy (default to relative paths). Override with VITE_API_BASE_URL if provided.
-axios.defaults.baseURL = import.meta.env.VITE_API_BASE_URL || ''
+axios.defaults.baseURL = import.meta.env.VITE_API_BASE_URL || 'https://neurolearn-6c0k.onrender.com'
 
 const AuthContext = createContext()
 

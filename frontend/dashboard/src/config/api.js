@@ -1,5 +1,5 @@
 // API Configuration
-const API_BASE_URL = import.meta.env.VITE_API_BASE_URL || 'https://neurolearn-7hk8.onrender.com'
+const API_BASE_URL = import.meta.env.VITE_API_BASE_URL || 'https://neurolearn-6c0k.onrender.com'
 
 // Helper function to build full API URLs
 export const buildApiUrl = (endpoint) => {
