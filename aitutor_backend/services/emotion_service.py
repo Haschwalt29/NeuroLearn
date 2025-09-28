@@ -12,12 +12,65 @@ face_emotion_path = os.path.join(os.path.dirname(__file__), '..', '..', 'Face-Em
 if face_emotion_path not in sys.path:
     sys.path.append(face_emotion_path)
 
+# Also add the backend subdirectory
+face_emotion_backend_path = os.path.join(face_emotion_path, 'backend')
+if face_emotion_backend_path not in sys.path:
+    sys.path.append(face_emotion_backend_path)
+
 try:
     from backend.models.emotion_detector import EmotionDetector
     print("✅ Real emotion detector imported successfully")
 except ImportError as e:
     print(f"❌ Failed to import real emotion detector: {e}")
-    print("Using mock detector instead")
+    # Try alternative import paths
+    try:
+        from models.emotion_detector import EmotionDetector
+        print("✅ Real emotion detector imported successfully (alternative path)")
+    except ImportError as e2:
+        print(f"❌ Failed to import real emotion detector (alternative path): {e2}")
+        # Try direct DeepFace import
+        try:
+            from deepface import DeepFace
+            print("✅ DeepFace imported successfully, creating direct detector")
+            
+            class EmotionDetector:
+                def __init__(self):
+                    self.model_name = 'emotion'
+                    print(f"Initialized DeepFace with {self.model_name} model")
+                
+                def detect_emotion_from_image_data(self, img, show_result=False):
+                    try:
+                        # Convert BGR to RGB for DeepFace
+                        img_rgb = cv2.cvtColor(img, cv2.COLOR_BGR2RGB)
+                        
+                        # Analyze emotion using DeepFace
+                        result = DeepFace.analyze(
+                            img_rgb, 
+                            actions=['emotion'],
+                            enforce_detection=False,
+                            silent=True
+                        )
+                        
+                        if result and len(result) > 0:
+                            emotions = result[0]['emotion']
+                            dominant_emotion = result[0]['dominant_emotion']
+                            
+                            # Convert to expected format
+                            emotion_scores = {}
+                            for emotion, score in emotions.items():
+                                emotion_scores[emotion] = score / 100.0  # Convert percentage to decimal
+                            
+                            return [{'emotion': emotion_scores, 'dominant_emotion': dominant_emotion}]
+                        else:
+                            return None
+                    except Exception as e:
+                        print(f"DeepFace analysis error: {e}")
+                        return None
+            
+            print("✅ Direct DeepFace emotion detector created")
+        except ImportError as e3:
+            print(f"❌ Failed to import DeepFace: {e3}")
+            print("Using mock detector instead")
     # Fallback: create a simple mock detector
     class EmotionDetector:
         def __init__(self):
