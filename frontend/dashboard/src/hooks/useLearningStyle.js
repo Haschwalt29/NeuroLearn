@@ -1,5 +1,7 @@
 import { useState, useCallback } from 'react';
 
+const API_BASE_URL = import.meta.env.VITE_API_BASE_URL || 'https://neurolearn-6c0k.onrender.com';
+
 export const useLearningStyle = (token) => {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
@@ -9,7 +11,7 @@ export const useLearningStyle = (token) => {
       setLoading(true);
       setError(null);
 
-      const response = await fetch('/api/learning-style/update', {
+      const response = await fetch(`${API_BASE_URL}/api/learning-style/update`, {
         method: 'POST',
         headers: {
           'Authorization': `Bearer ${token}`,
@@ -37,7 +39,7 @@ export const useLearningStyle = (token) => {
       setLoading(true);
       setError(null);
 
-      const response = await fetch('/api/learning-style/', {
+      const response = await fetch(`${API_BASE_URL}/api/learning-style/`, {
         headers: {
           'Authorization': `Bearer ${token}`,
           'Content-Type': 'application/json'
@@ -63,7 +65,7 @@ export const useLearningStyle = (token) => {
       setLoading(true);
       setError(null);
 
-      const response = await fetch('/api/learning-style/insights', {
+      const response = await fetch(`${API_BASE_URL}/api/learning-style/insights`, {
         headers: {
           'Authorization': `Bearer ${token}`,
           'Content-Type': 'application/json'
@@ -89,7 +91,7 @@ export const useLearningStyle = (token) => {
       setLoading(true);
       setError(null);
 
-      const response = await fetch('/api/learning-style/recommendations', {
+      const response = await fetch(`${API_BASE_URL}/api/learning-style/recommendations`, {
         headers: {
           'Authorization': `Bearer ${token}`,
           'Content-Type': 'application/json'
@@ -115,7 +117,7 @@ export const useLearningStyle = (token) => {
       setLoading(true);
       setError(null);
 
-      const response = await fetch('/api/learning-style/stats', {
+      const response = await fetch(`${API_BASE_URL}/api/learning-style/stats`, {
         headers: {
           'Authorization': `Bearer ${token}`,
           'Content-Type': 'application/json'
@@ -141,7 +143,7 @@ export const useLearningStyle = (token) => {
       setLoading(true);
       setError(null);
 
-      const response = await fetch('/api/learning-style/reset', {
+      const response = await fetch(`${API_BASE_URL}/api/learning-style/reset`, {
         method: 'POST',
         headers: {
           'Authorization': `Bearer ${token}`,

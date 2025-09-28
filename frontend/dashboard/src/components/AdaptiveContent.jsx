@@ -2,6 +2,8 @@ import React, { useState, useEffect } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
 import { BookOpen, Lightbulb, Target, RefreshCw, Eye, Headphones, BookOpen as BookIcon } from 'lucide-react'
 
+const API_BASE_URL = import.meta.env.VITE_API_BASE_URL || 'https://neurolearn-6c0k.onrender.com';
+
 export default function AdaptiveContent({ currentEmotion, userId, token }) {
   const [currentLesson, setCurrentLesson] = useState({
     id: 1,
@@ -79,7 +81,7 @@ export default function AdaptiveContent({ currentEmotion, userId, token }) {
 
   const fetchLearningStyle = async () => {
     try {
-      const response = await fetch('/api/learning-style/', {
+      const response = await fetch(`${API_BASE_URL}/api/learning-style/`, {
         headers: {
           'Authorization': `Bearer ${token}`,
           'Content-Type': 'application/json'
@@ -102,7 +104,7 @@ export default function AdaptiveContent({ currentEmotion, userId, token }) {
 
   const fetchStyleRecommendations = async () => {
     try {
-      const response = await fetch('/api/learning-style/recommendations', {
+      const response = await fetch(`${API_BASE_URL}/api/learning-style/recommendations`, {
         headers: {
           'Authorization': `Bearer ${token}`,
           'Content-Type': 'application/json'

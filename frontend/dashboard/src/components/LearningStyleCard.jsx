@@ -2,6 +2,8 @@ import React, { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { Eye, Headphones, BookOpen, TrendingUp, RefreshCw, Settings } from 'lucide-react';
 
+const API_BASE_URL = import.meta.env.VITE_API_BASE_URL || 'https://neurolearn-6c0k.onrender.com';
+
 const LearningStyleCard = ({ userId, token }) => {
   const [learningStyle, setLearningStyle] = useState(null);
   const [loading, setLoading] = useState(true);
@@ -18,7 +20,7 @@ const LearningStyleCard = ({ userId, token }) => {
       setLoading(true);
       setError(null);
 
-      const response = await fetch('/api/learning-style/', {
+      const response = await fetch(`${API_BASE_URL}/api/learning-style/`, {
         headers: {
           'Authorization': `Bearer ${token}`,
           'Content-Type': 'application/json'
@@ -46,7 +48,7 @@ const LearningStyleCard = ({ userId, token }) => {
 
   const fetchInsights = async () => {
     try {
-      const response = await fetch('/api/learning-style/insights', {
+      const response = await fetch(`${API_BASE_URL}/api/learning-style/insights`, {
         headers: {
           'Authorization': `Bearer ${token}`,
           'Content-Type': 'application/json'
@@ -64,7 +66,7 @@ const LearningStyleCard = ({ userId, token }) => {
 
   const fetchRecommendations = async () => {
     try {
-      const response = await fetch('/api/learning-style/recommendations', {
+      const response = await fetch(`${API_BASE_URL}/api/learning-style/recommendations`, {
         headers: {
           'Authorization': `Bearer ${token}`,
           'Content-Type': 'application/json'
