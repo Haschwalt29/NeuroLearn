@@ -15,24 +15,8 @@ def create_app(config_name: str = "development") -> Flask:
     app = Flask(__name__)
     app.config.from_object(get_config(config_name))
 
-    # Configure CORS for production and development
-    if config_name == "production":
-        # Production: Allow all Netlify domains and specific domains
-        CORS(app, origins=[
-            "https://neurolearn1.netlify.app",
-            "https://neurolearn.netlify.app", 
-            "https://*.netlify.app",
-            "https://neurolearn-frontend.onrender.com",
-            "https://neurolearn-dashboard.onrender.com"
-        ])
-    else:
-        # Development: Allow localhost and all Netlify domains
-        CORS(app, origins=[
-            "http://localhost:3000",
-            "http://127.0.0.1:3000",
-            "https://neurolearn1.netlify.app",
-            "https://*.netlify.app"
-        ])
+    # Configure CORS - Allow all origins for now to fix deployment issues
+    CORS(app, origins="*", supports_credentials=True)
     db.init_app(app)
     jwt.init_app(app)
     socketio.init_app(app)
