@@ -33,7 +33,7 @@ export function AuthProvider({ children }) {
 
   const fetchUser = async () => {
     try {
-      const response = await axios.get('/api/auth/me')
+      const response = await axios.get(`${import.meta.env.VITE_API_BASE_URL || 'https://neurolearn-6c0k.onrender.com'}/api/auth/me`)
       setUser(response.data)
     } catch (error) {
       localStorage.removeItem('token')
@@ -46,7 +46,7 @@ export function AuthProvider({ children }) {
 
   const login = async (email, password) => {
     try {
-      const response = await axios.post('/api/auth/login', { email, password })
+      const response = await axios.post(`${import.meta.env.VITE_API_BASE_URL || 'https://neurolearn-6c0k.onrender.com'}/api/auth/login`, { email, password })
       const { access_token, user: userData } = response.data
       
       localStorage.setItem('token', access_token)
@@ -65,7 +65,7 @@ export function AuthProvider({ children }) {
 
   const signup = async (email, password, name, role = 'learner') => {
     try {
-      const response = await axios.post('/api/auth/signup', { 
+      const response = await axios.post(`${import.meta.env.VITE_API_BASE_URL || 'https://neurolearn-6c0k.onrender.com'}/api/auth/signup`, { 
         email, 
         password, 
         name, 

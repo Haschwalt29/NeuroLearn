@@ -5,6 +5,8 @@ import CoLearnerAvatar from './CoLearnerAvatar'
 import { useAuth } from '../../contexts/AuthContext'
 import { useSocket } from '../../contexts/SocketContext'
 
+const API_BASE_URL = import.meta.env.VITE_API_BASE_URL || 'https://neurolearn-6c0k.onrender.com';
+
 export default function CoLearnerPanel({ isOpen, onClose }) {
   const { token } = useAuth()
   const { on } = useSocket()
@@ -17,7 +19,7 @@ export default function CoLearnerPanel({ isOpen, onClose }) {
   useEffect(() => {
     if (!isOpen) return
     const fetchState = async () => {
-      const res = await axios.get('/api/colearner/state', { headers: { Authorization: `Bearer ${token}` } })
+      const res = await axios.get(`${API_BASE_URL}/api/colearner/state`, { headers: { Authorization: `Bearer ${token}` } })
       setProfile(res.data.profile)
     }
     fetchState()
@@ -52,7 +54,7 @@ export default function CoLearnerPanel({ isOpen, onClose }) {
     if (!text) return
     setMessages((m) => [...m, { from: 'me', text }])
     setInput('')
-    const res = await axios.post('/api/colearner/message', { message: text }, { headers: { Authorization: `Bearer ${token}` } })
+    const res = await axios.post(`${API_BASE_URL}/api/colearner/message`, { message: text }, { headers: { Authorization: `Bearer ${token}` } })
     if (res.data?.text) {
       setMessages((m) => [...m, { from: 'co', text: res.data.text }])
     }
