@@ -16,19 +16,23 @@ def create_app(config_name: str = "development") -> Flask:
     app.config.from_object(get_config(config_name))
 
     # Configure CORS for production and development
-    allowed_origins = [
-        "http://localhost:3000", 
-        "http://127.0.0.1:3000",
-        "https://neurolearn-frontend.onrender.com",  # Update with your frontend URL
-        "https://neurolearn-dashboard.onrender.com"  # Update with your dashboard URL
-    ]
-    
-    # Add environment-specific origins
-    frontend_url = os.environ.get("FRONTEND_URL")
-    if frontend_url:
-        allowed_origins.append(frontend_url)
-    
-    CORS(app, origins=allowed_origins)
+    if config_name == "production":
+        # Production: Allow specific domains and Netlify
+        CORS(app, origins=[
+            "https://neurolearn1.netlify.app",
+            "https://neurolearn.netlify.app", 
+            "https://*.netlify.app",
+            "https://neurolearn-frontend.onrender.com",
+            "https://neurolearn-dashboard.onrender.com"
+        ])
+    else:
+        # Development: Allow localhost and specific domains
+        CORS(app, origins=[
+            "http://localhost:3000",
+            "http://127.0.0.1:3000",
+            "https://neurolearn1.netlify.app",
+            "https://*.netlify.app"
+        ])
     db.init_app(app)
     jwt.init_app(app)
     socketio.init_app(app)
