@@ -20,10 +20,10 @@ const LiveEmotionDetector = ({ onEmotionDetected, isEnabled = true }) => {
   const lastUpdateRef = useRef(0); // timestamp of last committed UI update
 
   // Smoothing parameters (can be exposed later in DevSettings)
-  const MIN_CONFIDENCE = 0.6; // Lowered from 0.75 for more sensitivity
-  const WINDOW_SIZE = 5; // Reduced from 7 for faster response
-  const PERSISTENCE_REQUIRED = 2; // Reduced from 4 for faster response
-  const MIN_CHANGE_INTERVAL_MS = 1500; // Reduced from 4000ms to 1.5s for faster updates
+  const MIN_CONFIDENCE = 0.75; // Increased from 0.6 for more stability
+  const WINDOW_SIZE = 7; // Increased from 5 for more stability
+  const PERSISTENCE_REQUIRED = 3; // Increased from 2 for more stability
+  const MIN_CHANGE_INTERVAL_MS = 3000; // Increased from 1500ms to 3s for more stability
 
   const emotionIcons = {
     happy: Smile,
@@ -137,7 +137,7 @@ const LiveEmotionDetector = ({ onEmotionDetected, isEnabled = true }) => {
       if (videoRef.current && isEnabled) {
         await detectEmotion();
       }
-    }, 1000); // Detect every 1 second for faster response
+    }, 2000); // Detect every 2 seconds for more stability
   };
 
   const stopEmotionDetection = () => {
