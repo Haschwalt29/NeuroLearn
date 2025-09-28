@@ -99,8 +99,8 @@ const StoryDashboard = ({ userId, token }) => {
   if (error || !storyData) {
     return (
       <div className="bg-white rounded-xl shadow-lg p-6">
-        <div className="text-center text-red-600">
-          <p>Failed to load story data: {error}</p>
+        <div className="text-center text-gray-600">
+          <p>Story content will be available soon.</p>
         </div>
       </div>
     );

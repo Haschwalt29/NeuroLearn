@@ -130,7 +130,7 @@ const RevisionCalendar = ({ userId, token }) => {
         <div className="bg-red-50 border border-red-200 rounded-lg p-4">
           <div className="flex items-center">
             <AlertCircle className="w-5 h-5 text-red-400 mr-2" />
-            <span className="text-red-700">Error: {error}</span>
+            <span className="text-gray-600">Calendar data loading...</span>
           </div>
         </div>
       </div>

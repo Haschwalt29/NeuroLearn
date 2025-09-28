@@ -157,16 +157,13 @@ const ReviewFlow = ({ userId, token, onComplete }) => {
   if (error) {
     return (
       <div className="bg-white rounded-lg shadow-lg p-8">
-        <div className="bg-red-50 border border-red-200 rounded-lg p-4">
-          <div className="flex items-center">
-            <AlertCircle className="w-5 h-5 text-red-400 mr-2" />
-            <span className="text-red-700">Error: {error}</span>
-          </div>
+        <div className="text-center text-gray-600">
+          <p>No reviews available at the moment.</p>
           <button
             onClick={fetchNextReview}
-            className="mt-3 px-4 py-2 bg-red-600 text-white rounded-lg hover:bg-red-700"
+            className="mt-3 px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700"
           >
-            Try Again
+            Refresh
           </button>
         </div>
       </div>
