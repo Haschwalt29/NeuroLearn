@@ -10,7 +10,7 @@ A comprehensive AI-powered learning platform that combines emotion detection, ad
   <img src="assets/images/screenshots/HomePage.png" alt="NeuroLearn Homepage" width="90%" style="border-radius: 8px; box-shadow: 0 4px 8px rgba(0,0,0,0.1);" onerror="this.style.display='none'; this.nextElementSibling.style.display='block';"/>
   <div style="display:none; background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); border-radius: 8px; padding: 60px 20px; text-align: center; color: white;">
     <h3 style="margin: 0 0 20px 0; font-size: 24px;">🖼️ Homepage Preview</h3>
-    <p style="margin: 0; font-size: 16px; opacity: 0.9;">Add your HomePage.png screenshot to assets/images/screenshots/</p>
+    <p style="margin: 0; font-size: 16px; opacity: 0.9;"</p>
     <p style="margin: 10px 0 0 0; font-size: 14px; opacity: 0.8;">📱 Modern, responsive design with AI-powered features</p>
   </div>
 </div>
@@ -243,5 +243,6 @@ This project is licensed under the MIT License - see the [LICENSE](LICENSE) file
 For questions about this project, please reach out to the development team.
 
 ---
+
 
 *Built with ❤️ for the future of education*
