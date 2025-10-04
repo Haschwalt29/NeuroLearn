@@ -13,7 +13,11 @@ services:
       - key: JWT_SECRET_KEY
         generateValue: true
       - key: DATABASE_URL
-        value: postgresql://user:password@host:port/database
+        fromDatabase:
+          name: neurolearn-db
+          property: connectionString
+      - key: PORT
+        value: $PORT
     healthCheckPath: /api/auth/health
     autoDeploy: true
     branch: main
