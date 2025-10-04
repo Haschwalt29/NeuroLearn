@@ -9,7 +9,7 @@
   "scripts": {
     "dev": "concurrently \"npm run backend:dev\" \"npm run frontend:dev\"",
     "frontend:dev": "cd frontend/dashboard && npm run dev",
-    "frontend:build": "cd frontend/dashboard && npm run build",
+    "frontend:build": "cd frontend/dashboard && npm ci && npx vite build",
     "backend:dev": "cd backend && python start_server.py",
     "backend:install": "cd backend && pip install -r requirements.txt",
     "install:all": "npm install && npm run backend:install",
