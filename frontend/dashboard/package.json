@@ -28,9 +28,9 @@
   },
   "scripts": {
     "dev": "vite",
-    "build": "vite build",
-    "build:production": "vite build --mode production",
+    "build": "npx vite build",
+    "build:production": "npx vite build --mode production",
     "preview": "vite preview",
-    "netlify-build": "npm ci && vite build"
+    "netlify-build": "npm ci && npx vite build"
   }
 }
