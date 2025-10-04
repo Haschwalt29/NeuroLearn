@@ -16,7 +16,7 @@
 
 [build.processing.js]
   bundle = true
-  minify = await true
+  minify = true
 
 [build.processing.html]
   pretty_urls = true
