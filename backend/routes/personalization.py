@@ -12,7 +12,6 @@ personalization_engine = PersonalizationEngine()
 @personalization_bp.get("/insights")
 @jwt_required()
 def get_learning_insights():
-    """Get comprehensive learning insights for user"""
     user_id = int(get_jwt_identity())
     
     try:

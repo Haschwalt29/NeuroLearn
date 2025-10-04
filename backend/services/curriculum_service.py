@@ -15,7 +15,6 @@ import numpy as np
 from .. import db, socketio
 from ..models import Resource, LessonCard, LearningPath, CurriculumUpdate, User, LearnerConceptMastery
 
-# Download required NLTK data
 try:
     nltk.data.find('tokenizers/punkt')
     nltk.data.find('corpora/stopwords')
@@ -99,7 +98,7 @@ class CurriculumService:
                 if response.status_code == 200:
                     data = response.json()
                     
-                    for item in data.get('children', [])[:10]:  # Limit to 10 per subject
+                    for item in data.get('children', [])[:10]:
                         resource = {
                             'title': item.get('title', ''),
                             'subject': subject,
@@ -121,12 +120,10 @@ class CurriculumService:
         return resources
 
     def _fetch_arxiv_resources(self, subjects: List[str]) -> List[Dict[str, Any]]:
-        """Fetch recent papers from ArXiv"""
         resources = []
         
         for subject in subjects:
             try:
-                # Map subjects to ArXiv categories
                 category_mapping = {
                     'mathematics': 'math',
                     'computer_science': 'cs',

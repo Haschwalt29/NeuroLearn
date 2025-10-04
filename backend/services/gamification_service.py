@@ -64,36 +64,19 @@ class GamificationService:
     
     def award_xp(self, user_id: int, source: str, source_id: int = None, 
                 custom_amount: int = None, description: str = None) -> Dict:
-        """
-        Award XP to user
-        
-        Args:
-            user_id: User ID
-            source: XP source type
-            source_id: ID of the source object
-            custom_amount: Custom XP amount (overrides default)
-            description: Custom description
-            
-        Returns:
-            Dictionary with XP award result
-        """
-        # Get XP amount
         amount = custom_amount or self.xp_sources.get(source, 0)
         if amount <= 0:
             return {"error": "Invalid XP amount"}
         
-        # Get or create user XP profile
         user_xp = UserXP.query.filter_by(user_id=user_id).first()
         if not user_xp:
             user_xp = UserXP(user_id=user_id)
             db.session.add(user_xp)
         
-        # Add XP
         old_level = user_xp.current_level
         user_xp.total_xp += amount
         user_xp.xp_in_current_level += amount
         
-        # Check for level up
         levels_gained = 0
         while user_xp.xp_in_current_level >= user_xp.xp_to_next_level:
             user_xp.xp_in_current_level -= user_xp.xp_to_next_level

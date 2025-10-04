@@ -2,17 +2,13 @@ import base64
 import cv2
 import numpy as np
 from typing import Optional, Tuple
-
-# Reuse existing detector implementation
 import sys
 import os
 
-# Add the Face-Emotion-Detector directory to the path
 face_emotion_path = os.path.join(os.path.dirname(__file__), '..', '..', 'Face-Emotion-Detector')
 if face_emotion_path not in sys.path:
     sys.path.append(face_emotion_path)
 
-# Also add the backend subdirectory
 face_emotion_backend_path = os.path.join(face_emotion_path, 'backend')
 if face_emotion_backend_path not in sys.path:
     sys.path.append(face_emotion_backend_path)
@@ -22,13 +18,11 @@ try:
     print("✅ Real emotion detector imported successfully")
 except ImportError as e:
     print(f"❌ Failed to import real emotion detector: {e}")
-    # Try alternative import paths
     try:
         from models.emotion_detector import EmotionDetector
         print("✅ Real emotion detector imported successfully (alternative path)")
     except ImportError as e2:
         print(f"❌ Failed to import real emotion detector (alternative path): {e2}")
-        # Try direct DeepFace import
         try:
             from deepface import DeepFace
             print("✅ DeepFace imported successfully, creating direct detector")
@@ -40,10 +34,7 @@ except ImportError as e:
                 
                 def detect_emotion_from_image_data(self, img, show_result=False):
                     try:
-                        # Convert BGR to RGB for DeepFace
                         img_rgb = cv2.cvtColor(img, cv2.COLOR_BGR2RGB)
-                        
-                        # Analyze emotion using DeepFace
                         result = DeepFace.analyze(
                             img_rgb, 
                             actions=['emotion'],
@@ -55,10 +46,9 @@ except ImportError as e:
                             emotions = result[0]['emotion']
                             dominant_emotion = result[0]['dominant_emotion']
                             
-                            # Convert to expected format
                             emotion_scores = {}
                             for emotion, score in emotions.items():
-                                emotion_scores[emotion] = score / 100.0  # Convert percentage to decimal
+                                emotion_scores[emotion] = score / 100.0
                             
                             return [{'emotion': emotion_scores, 'dominant_emotion': dominant_emotion}]
                         else:
@@ -76,33 +66,26 @@ except ImportError as e:
         def __init__(self):
             pass
         def detect_emotion_from_image_data(self, img, show_result=False):
-            # Mock implementation for testing - return more realistic emotions
             import random
             
-            # Simulate more realistic emotion detection
-            # If the image has good lighting and a face, prefer positive emotions
             height, width = img.shape[:2]
-            
-            # Simple heuristic: larger images (closer faces) tend to be happier
             face_size_score = min(height * width / (640 * 480), 1.0)
             
-            # Bias towards positive emotions for better user experience
-            if face_size_score > 0.3:  # Good face size
+            if face_size_score > 0.3:
                 emotions = ['happy', 'surprise', 'neutral', 'sad', 'angry', 'fear', 'disgust']
-                weights = [0.4, 0.2, 0.2, 0.1, 0.05, 0.03, 0.02]  # Bias towards happy
+                weights = [0.4, 0.2, 0.2, 0.1, 0.05, 0.03, 0.02]
             else:
                 emotions = ['happy', 'sad', 'angry', 'fear', 'surprise', 'disgust', 'neutral']
-                weights = [0.2, 0.2, 0.2, 0.15, 0.15, 0.05, 0.05]  # More random
+                weights = [0.2, 0.2, 0.2, 0.15, 0.15, 0.05, 0.05]
             
             dominant = random.choices(emotions, weights=weights)[0]
             
-            # Create realistic emotion distribution
             emotion_scores = {}
             for emotion in emotions:
                 if emotion == dominant:
-                    emotion_scores[emotion] = random.uniform(0.7, 0.95)  # High confidence for dominant
+                    emotion_scores[emotion] = random.uniform(0.7, 0.95)
                 else:
-                    emotion_scores[emotion] = random.uniform(0.01, 0.3)  # Lower for others
+                    emotion_scores[emotion] = random.uniform(0.01, 0.3)
             
             return [{'emotion': emotion_scores, 'dominant_emotion': dominant}]
 

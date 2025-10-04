@@ -4,6 +4,14 @@
 
 A comprehensive AI-powered learning platform that combines emotion detection, adaptive learning, gamification, and intelligent tutoring systems to create personalized educational experiences.
 
+## 🏠 Homepage Preview
+
+<div align="center">
+  <img src="assets/images/screenshots/HomePage.png" alt="NeuroLearn Homepage" width="90%" style="border-radius: 8px; box-shadow: 0 4px 8px rgba(0,0,0,0.1);"/>
+  <br/>
+  <em>Modern, responsive homepage showcasing the AI-powered learning platform</em>
+</div>
+
 ## 🚀 Features
 
 ### Core Learning Features
@@ -217,7 +225,7 @@ This project is licensed under the MIT License - see the [LICENSE](LICENSE) file
 - Responsive design with Tailwind CSS
 - Smooth animations with Framer Motion
 - Interactive 3D visualizations
-- Real-time collaborative features
+- Real-time collaborative features with OpenCV
 - Comprehensive analytics dashboard
 
 **Industry Standards:**

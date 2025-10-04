@@ -8,7 +8,6 @@ from .. import db
 
 
 class QuestEngine:
-    """Engine for generating and managing story-driven quests"""
     
     def __init__(self):
         self.story_themes = {

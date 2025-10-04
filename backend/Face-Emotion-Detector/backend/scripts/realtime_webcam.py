@@ -5,25 +5,20 @@ import time
 
 class RealtimeEmotionDetector:
     def __init__(self):
-        """Initialize real-time emotion detector"""
         print("Initializing Realtime Emotion Detector...")
         print("Press 'q' to quit, 's' to save current frame")
         
-        # Initialize face cascade for faster face detection
         self.face_cascade = cv2.CascadeClassifier(cv2.data.haarcascades + 'haarcascade_frontalface_default.xml')
         
-        # Emotion colors for visualization
         self.emotion_colors = {
-            'angry': (0, 0, 255),      # Red
-            'disgust': (0, 255, 0),    # Green
-            'fear': (255, 0, 255),     # Magenta
-            'happy': (0, 255, 255),    # Yellow
-            'sad': (255, 0, 0),        # Blue
-            'surprise': (255, 255, 0), # Cyan
-            'neutral': (128, 128, 128) # Gray
+            'angry': (0, 0, 255),
+            'disgust': (0, 255, 0),
+            'fear': (255, 0, 255),
+            'happy': (0, 255, 255),
+            'sad': (255, 0, 0),
+            'surprise': (255, 255, 0),
+            'neutral': (128, 128, 128)
         }
-        
-        # Performance tracking
         self.frame_count = 0
         self.start_time = time.time()
         self.fps = 0

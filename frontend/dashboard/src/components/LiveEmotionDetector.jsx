@@ -16,14 +16,13 @@ const LiveEmotionDetector = ({ onEmotionDetected, isEnabled = true }) => {
   const [showHistory, setShowHistory] = useState(false);
   const streamRef = useRef(null);
   const detectionIntervalRef = useRef(null);
-  const resultsBufferRef = useRef([]); // rolling window of recent results
-  const lastUpdateRef = useRef(0); // timestamp of last committed UI update
+  const resultsBufferRef = useRef([]);
+  const lastUpdateRef = useRef(0);
 
-  // Optimized smoothing parameters for faster response
-  const MIN_CONFIDENCE = 0.5; // Lowered for more sensitivity
-  const WINDOW_SIZE = 3; // Smaller window for faster response
-  const PERSISTENCE_REQUIRED = 1; // Only need 1 confident result for immediate update
-  const MIN_CHANGE_INTERVAL_MS = 500; // Reduced to 0.5s for much faster updates
+  const MIN_CONFIDENCE = 0.5;
+  const WINDOW_SIZE = 3;
+  const PERSISTENCE_REQUIRED = 1;
+  const MIN_CHANGE_INTERVAL_MS = 500;
 
   const emotionIcons = {
     happy: Smile,

@@ -19,10 +19,10 @@ const RevisionCalendar = ({ userId, token }) => {
       setError(null);
 
       const startDate = new Date(currentDate);
-      startDate.setDate(1); // First day of month
+      startDate.setDate(1);
       const endDate = new Date(currentDate);
       endDate.setMonth(endDate.getMonth() + 1);
-      endDate.setDate(0); // Last day of month
+      endDate.setDate(0);
 
       const response = await fetch(
         `/api/revision/calendar?start=${startDate.toISOString()}&end=${endDate.toISOString()}`,
@@ -69,12 +69,9 @@ const RevisionCalendar = ({ userId, token }) => {
 
     const days = [];
     
-    // Add empty cells for days before the first day of the month
     for (let i = 0; i < startingDayOfWeek; i++) {
       days.push(null);
     }
-    
-    // Add days of the month
     for (let day = 1; day <= daysInMonth; day++) {
       days.push(new Date(year, month, day));
     }

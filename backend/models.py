@@ -7,9 +7,9 @@ class User(db.Model):
     email = db.Column(db.String(120), unique=True, nullable=False)
     password_hash = db.Column(db.String(256), nullable=False)
     name = db.Column(db.String(120), nullable=True)
-    role = db.Column(db.String(20), default="learner")  # learner/teacher
+    role = db.Column(db.String(20), default="learner")
     emotion_opt_in = db.Column(db.Boolean, default=False)
-    learning_style_opt_in = db.Column(db.Boolean, default=True)  # Enable learning style tracking
+    learning_style_opt_in = db.Column(db.Boolean, default=True)
     created_at = db.Column(db.DateTime, default=datetime.utcnow)
 
     emotion_logs = db.relationship("EmotionLog", backref="user", lazy=True)
@@ -23,7 +23,7 @@ class Content(db.Model):
     topic = db.Column(db.String(120), nullable=False)
     question = db.Column(db.Text, nullable=False)
     answer = db.Column(db.Text, nullable=False)
-    difficulty = db.Column(db.Float, default=0.5)  # 0.0 to 1.0
+    difficulty = db.Column(db.Float, default=0.5)
     created_at = db.Column(db.DateTime, default=datetime.utcnow)
     
     user_progress = db.relationship("UserProgress", backref="content", lazy=True)
@@ -38,9 +38,7 @@ class UserProgress(db.Model):
     ease_factor = db.Column(db.Float, default=2.5)
     interval_days = db.Column(db.Integer, default=1)
     repetitions = db.Column(db.Integer, default=0)
-    performance_score = db.Column(db.Float, default=0.0)  # 0-5 scale
-    
-    # Ensure unique user-content pairs
+    performance_score = db.Column(db.Float, default=0.0)
     __table_args__ = (db.UniqueConstraint('user_id', 'content_id', name='unique_user_content'),)
 
 
