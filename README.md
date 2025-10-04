@@ -95,7 +95,12 @@ NeuroLearn/
 
 ## 🚦 Quick Start
 
-### Prerequisites
+### 🌟 Try Live Demo First!
+Before setting up locally, check out the live deployment:
+- **Frontend**: [https://neurolearn1.netlify.app/dashboard](https://neurolearn1.netlify.app/dashboard)
+- **Backend API**: [https://neurolearn-6c0k.onrender.com/](https://neurolearn-6c0k.onrender.com/)
+
+### Prerequisites (for Local Development)
 - Python 3.10+
 - Node.js 16+
 - npm/yarn
@@ -196,10 +201,17 @@ cd frontend/dashboard && npm test
 
 ## 🚀 Deployment
 
+The platform is now live and accessible at:
+
+### 🌐 Live Demo URLs
+- **🎯 Frontend Dashboard**: [https://neurolearn1.netlify.app/dashboard](https://neurolearn1.netlify.app/dashboard)
+- **⚙️ Backend API**: [https://neurolearn-6c0k.onrender.com/](https://neurolearn-6c0k.onrender.com/)
+
+### Deployment Configuration
 The platform supports multiple deployment options:
-- **Render**: See `render.yaml`
-- **Vercel**: See `vercel.json`
-- **Netlify**: See `netlify.toml`
+- **Netlify**: Frontend deployed via `netlify.toml`
+- **Render**: Backend deployed via `render.yaml`
+- **Vercel**: Alternative frontend deployment via `vercel.json`
 
 ## 🤝 Contributing
 
