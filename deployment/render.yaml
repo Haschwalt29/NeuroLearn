@@ -1,0 +1,25 @@
+services:
+  - type: web
+    name:   neurolearn-backend
+    env: python
+    plan: starter
+    buildCommand: pip install -r requirements.txt
+    startCommand: python start_server.py
+    envVars:
+      - key: FLASK_ENV
+        value: production
+      - key: SECRET_KEY
+        generateValue: true
+      - key: JWT_SECRET_KEY
+        generateValue: true
+      - key: DATABASE_URL
+        value: postgresql://user:password@host:port/database
+    healthCheckPath: /api/auth/health
+    autoDeploy: true
+    branch: main
+
+databases:
+  - name: neurolearn-db
+    plan: starter
+    databaseName: neurolearn
+    user: neurolearn_user

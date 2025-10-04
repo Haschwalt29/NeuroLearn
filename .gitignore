@@ -1,0 +1,99 @@
+# Dependencies
+node_modules/
+*/node_modules/
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+.Python
+
+# Environment variables
+.env
+.env.local
+.env.development.local
+.env.test.local
+.env.production.local
+*.env
+
+# Database
+*.db
+*.sqlite
+*.sqlite3
+
+# Build outputs
+dist/
+build/
+*.egg-info/
+.eggs/
+
+# IDE and editor files
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+
+# OS generated files
+.DS_Store
+.DS_Store?
+._*
+.Spotlight-V100
+.Trashes
+ehthumbs.db
+Thumbs.db
+
+# Logs
+logs/
+*.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# Runtime data
+pids/
+*.pid
+*.seed
+*.pid.lock
+
+# Coverage directory used by tools like istanbul
+coverage/
+.nyc_output/
+
+# Temporary folders
+tmp/
+temp/
+
+# Capture emotion images (temporary)
+captured_emotion_*.jpg
+
+# Jupyter notebooks checkpoints
+.ipynb_checkpoints/
+
+# Virtual environments
+venv/
+env/
+ENV/
+
+# Flask/Werkzeug specific
+instance/
+
+# FastAPI specific
+.pytest_cache/
+
+# Machine learning models (can be large)
+*.pkl
+*.joblib
+models/*.h5
+models/*.pt
+
+# Training data (can be very large)
+data/images/images/train/
+data/images/images/test/
+
+# Deployment specific
+.dockerignore
+Dockerfile.local
+
+# Package manager lockfiles (choose one)
+# package-lock.json  # Comment out if using yarn
+# yarn.lock          # Comment out if using npm

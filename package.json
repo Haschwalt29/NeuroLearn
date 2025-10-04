@@ -1,0 +1,46 @@
+{
+  "name": "neurolearn",
+  "version": "1.0.0",
+  "description": "AI-Powered Learning Platform with Emotion Detection and Adaptive Tutoring",
+  "private": true,
+  "workspaces": [
+    "frontend/dashboard"
+  ],
+  "scripts": {
+    "dev": "concurrently \"npm run backend:dev\" \"npm run frontend:dev\"",
+    "frontend:dev": "cd frontend/dashboard && npm run dev",
+    "frontend:build": "cd frontend/dashboard && npm run build",
+    "backend:dev": "cd backend && python start_server.py",
+    "backend:install": "cd backend && pip install -r requirements.txt",
+    "install:all": "npm install && npm run backend:install",
+    "start": "npm run dev",
+    "build": "npm run frontend:build",
+    "test": "concurrently \"npm run backend:test\" \"npm run frontend:test\"",
+    "backend:test": "cd backend && python -m pytest tests/",
+    "frontend:test": "cd frontend/dashboard && npm test"
+  },
+  "devDependencies": {
+    "concurrently": "^8.2.2"
+  },
+  "keywords": [
+    "ai",
+    "education",
+    "machine-learning",
+    "emotion-detection",
+    "adaptive-learning",
+    "react",
+    "python",
+    "flask",
+    "tutoring"
+  ],
+  "author": "NeuroLearn Team",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/neurolearn/neurolearn"
+  },
+  "engines": {
+    "node": ">=16.0.0",
+    "npm": ">=8.0.0"
+  }
+}

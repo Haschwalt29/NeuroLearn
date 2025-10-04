@@ -33,7 +33,7 @@ export function SocketProvider({ children }) {
       newSocket.on('disconnect', () => {
         setConnected(false)
         console.log('Disconnected from server')
-      })
+      }) 
 
       newSocket.on('connect_error', (error) => {
         console.error('Connection error:', error)
