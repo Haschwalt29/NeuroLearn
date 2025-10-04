@@ -1,5 +1,5 @@
 [build]
-  command = "cd frontend/dashboard && bash .netlify-build-command.sh"
+  command = "cd frontend/dashboard && npm install && npx vite build"
   publish = "frontend/dashboard/dist"
   base = "."
 
