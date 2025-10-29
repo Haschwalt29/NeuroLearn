@@ -1,0 +1,12 @@
+# Ignore Python backend files for Netlify frontend build
+requirements.txt
+start_server.py
+backend/
+*.py
+__pycache__/
+*.db
+*.db-journal
+.env
+venv/
+env/
+

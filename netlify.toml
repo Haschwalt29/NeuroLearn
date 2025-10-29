@@ -6,6 +6,10 @@
 [build.environment]
   NODE_VERSION = "22"
   NPM_FLAGS = "--foreground-scripts"
+  PIP = ""  # Disable Python environment
+
+[build.processing.skip]
+  skip = []
 
 [build.processing]
   skip_processing = false
