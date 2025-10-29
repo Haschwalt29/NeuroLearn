@@ -3,9 +3,6 @@
   "version": "1.0.0",
   "description": "AI-Powered Learning Platform with Emotion Detection and Adaptive Tutoring",
   "private": true,
-  "workspaces": [
-    "frontend/dashboard"
-  ],
   "scripts": {
     "dev": "concurrently \"npm run backend:dev\" \"npm run frontend:dev\"",
     "frontend:dev": "cd frontend/dashboard && npm run dev",

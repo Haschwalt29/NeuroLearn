@@ -1,5 +1,5 @@
 [build]
-  command = "cd frontend/dashboard && npm install && npm run build"
+  command = "cd frontend/dashboard && npm ci && ./node_modules/.bin/vite build"
   publish = "frontend/dashboard/dist"
   base = "."
 
