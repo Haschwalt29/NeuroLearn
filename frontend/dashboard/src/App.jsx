@@ -5,7 +5,6 @@ import { AuthProvider, useAuth } from './contexts/AuthContext'
 import { EmotionProvider } from './contexts/EmotionContext'
 import { SocketProvider } from './contexts/SocketContext'
 import { ThemeProvider } from './contexts/ThemeContext'
-import Login from './pages/Login'
 import Dashboard from './pages/Dashboard'
 import Settings from './pages/Settings'
 import AdminDashboard from './pages/AdminDashboard'
@@ -18,7 +17,7 @@ function ProtectedRoute({ children, requireAdmin = false }) {
   const { user, loading } = useAuth()
   
   if (loading) return <LoadingSpinner />
-  if (!user) return <Navigate to="/login" />
+  if (!user) return <Navigate to="/dashboard" />
   if (requireAdmin && user.role !== 'teacher') return <Navigate to="/dashboard" />
   
   return children
@@ -32,7 +31,6 @@ function AppRoutes() {
       <div>
         {user && <Navbar />}
         <Routes>
-          <Route path="/login" element={!user ? <Login /> : <Navigate to="/dashboard" />} />
           <Route 
             path="/dashboard" 
             element={
