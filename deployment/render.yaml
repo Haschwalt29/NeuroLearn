@@ -3,7 +3,7 @@ services:
     name:   neurolearn-backend
     env: python
     plan: starter
-    buildCommand: pip install -r requirements.txt
+    buildCommand: pip install -r deployment/requirements.txt
     startCommand: python start_server.py
     envVars:
       - key: FLASK_ENV
