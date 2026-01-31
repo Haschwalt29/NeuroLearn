@@ -10,6 +10,7 @@ import Settings from './pages/Settings'
 import AdminDashboard from './pages/AdminDashboard'
 import FeedbackPage from './pages/FeedbackPage'
 import RevisionPage from './pages/RevisionPage'
+import LoginPage from './pages/LoginPage'
 import Navbar from './components/Navbar'
 import LoadingSpinner from './components/LoadingSpinner'
 
@@ -17,8 +18,8 @@ function ProtectedRoute({ children, requireAdmin = false }) {
   const { user, loading } = useAuth()
   
   if (loading) return <LoadingSpinner />
-  if (!user) return <Navigate to="/dashboard" />
-  if (requireAdmin && user.role !== 'teacher') return <Navigate to="/dashboard" />
+  if (!user) return <Navigate to="/login" replace />
+  if (requireAdmin && user.role !== 'teacher') return <Navigate to="/dashboard" replace />
   
   return children
 }
@@ -31,6 +32,7 @@ function AppRoutes() {
       <div>
         {user && <Navbar />}
         <Routes>
+          <Route path="/login" element={<LoginPage />} />
           <Route 
             path="/dashboard" 
             element={
@@ -71,7 +73,7 @@ function AppRoutes() {
               </ProtectedRoute>
             } 
           />
-          <Route path="/" element={<Navigate to="/dashboard" />} />
+          <Route path="/" element={<Navigate to={user ? "/dashboard" : "/login"} replace />} />
         </Routes>
       </div>
     </Router>
