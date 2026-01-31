@@ -21,7 +21,66 @@ def handle_options(path):
     return "", 200
 
 
-# Login and signup routes removed - no authentication required
+@auth_bp.post("/login")
+def login():
+    """POST /api/auth/login - email, password -> access_token + user"""
+    data = request.get_json() or {}
+    email = (data.get("email") or "").strip().lower()
+    password = data.get("password") or ""
+    if not email or not password:
+        return jsonify({"error": "Email and password required"}), 400
+    user = User.query.filter_by(email=email).first()
+    if not user or not check_password_hash(user.password_hash, password):
+        return jsonify({"error": "Invalid email or password"}), 401
+    token = create_access_token(identity=user.id)
+    return jsonify({
+        "access_token": token,
+        "user": {
+            "id": user.id,
+            "email": user.email,
+            "name": user.name,
+            "role": user.role,
+            "emotion_opt_in": user.emotion_opt_in,
+        },
+    })
+
+
+@auth_bp.post("/signup")
+def signup():
+    """POST /api/auth/signup - email, password, name, role -> access_token + user"""
+    data = request.get_json() or {}
+    email = (data.get("email") or "").strip().lower()
+    password = data.get("password") or ""
+    name = (data.get("name") or "").strip() or None
+    role = (data.get("role") or "learner").strip().lower()
+    if role not in ("learner", "teacher"):
+        role = "learner"
+    if not email or not password:
+        return jsonify({"error": "Email and password required"}), 400
+    if len(password) < 6:
+        return jsonify({"error": "Password must be at least 6 characters"}), 400
+    if User.query.filter_by(email=email).first():
+        return jsonify({"error": "Email already registered"}), 409
+    user = User(
+        email=email,
+        password_hash=generate_password_hash(password),
+        name=name,
+        role=role,
+    )
+    db.session.add(user)
+    db.session.commit()
+    token = create_access_token(identity=user.id)
+    return jsonify({
+        "access_token": token,
+        "user": {
+            "id": user.id,
+            "email": user.email,
+            "name": user.name,
+            "role": user.role,
+            "emotion_opt_in": user.emotion_opt_in,
+        },
+    })
+
 
 @auth_bp.get("/me")
 @jwt_required()
