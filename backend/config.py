@@ -9,26 +9,19 @@ class BaseConfig:
     if database_url.startswith("postgres://"):
         database_url = database_url.replace("postgres://", "postgresql://", 1)
 
-    # On Render, fromDatabase.connectionString is the *internal* URL (private network).
-    # Do not force SSL for internal connections — it can cause "SSL connection closed unexpectedly".
-    # For external Postgres (e.g. non-Render or manual external URL), require SSL.
-    on_render = os.environ.get("RENDER") == "true"
-    if (
-        database_url.startswith("postgresql://")
-        and not on_render
-        and "sslmode" not in database_url
-    ):
+    # Render Postgres (external hostname) requires SSL. Add sslmode if not present.
+    if database_url.startswith("postgresql://") and "sslmode" not in database_url:
         database_url += "&sslmode=require" if "?" in database_url else "?sslmode=require"
 
     SQLALCHEMY_DATABASE_URI = database_url
     SQLALCHEMY_TRACK_MODIFICATIONS = False
-    # Prevent stale DB connections; only force SSL when not on Render (external URLs)
-    _pg_connect_args = {"sslmode": "require"} if (
-        database_url.startswith("postgresql://") and not on_render
-    ) else {}
+    # SSL for Postgres; connect_timeout avoids long hangs on connection failure
+    _pg_connect_args = {}
+    if database_url.startswith("postgresql://"):
+        _pg_connect_args = {"sslmode": "require", "connect_timeout": "10"}
     SQLALCHEMY_ENGINE_OPTIONS = {
         "pool_pre_ping": True,
-        "pool_recycle": 300,
+        "pool_recycle": 280,
         "connect_args": _pg_connect_args,
     }
     JWT_SECRET_KEY = os.environ.get("JWT_SECRET_KEY", "dev-secret")

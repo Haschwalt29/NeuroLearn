@@ -1,4 +1,6 @@
 import os
+import time
+import threading
 from flask import Flask
 from flask_cors import CORS
 from flask_sqlalchemy import SQLAlchemy
@@ -9,6 +11,28 @@ from .config import get_config
 db = SQLAlchemy()
 jwt = JWTManager()
 socketio = SocketIO(cors_allowed_origins="*")
+
+
+def _init_db_with_retries(app: Flask, max_attempts: int = 12, delay_sec: float = 5.0) -> None:
+    """Run DB migrations and seeders with retries so app can start and bind to PORT first."""
+    for attempt in range(1, max_attempts + 1):
+        try:
+            with app.app_context():
+                db.create_all()
+                from .services.content_seeder import seed_sample_content
+                seed_sample_content()
+                from .services.badge_seeder import seed_badges
+                seed_badges()
+                from .services.story_seeder import seed_sample_story, seed_additional_badges
+                seed_sample_story()
+                seed_additional_badges()
+                from .services.curriculum_scheduler import curriculum_scheduler
+                curriculum_scheduler.start()
+            return
+        except Exception:
+            if attempt == max_attempts:
+                raise
+            time.sleep(delay_sec)
 
 
 def create_app(config_name: str = "development") -> Flask:
@@ -63,26 +87,25 @@ def create_app(config_name: str = "development") -> Flask:
     app.register_blueprint(curriculum_bp, url_prefix="/api/curriculum")
     app.register_blueprint(debate_bp, url_prefix="/api/debate")
 
-    # Create tables if not exist (dev convenience)
-    with app.app_context():
-        db.create_all()
-        
-        # Seed sample content for demo
-        from .services.content_seeder import seed_sample_content
-        seed_sample_content()
-        
-        # Seed badges for gamification
-        from .services.badge_seeder import seed_badges
-        seed_badges()
-        
-        # Seed story data
-        from .services.story_seeder import seed_sample_story, seed_additional_badges
-        seed_sample_story()
-        seed_additional_badges()
-        
-        # Start curriculum scheduler
-        from .services.curriculum_scheduler import curriculum_scheduler
-        curriculum_scheduler.start()
+    # On Render: defer DB init to a background thread with retries so the app can start and bind to PORT
+    # (avoids deploy failure when Postgres is briefly unreachable or SSL handshake is slow)
+    if os.environ.get("RENDER") == "true":
+        def run_init():
+            _init_db_with_retries(app)
+
+        threading.Thread(target=run_init, daemon=True).start()
+    else:
+        with app.app_context():
+            db.create_all()
+            from .services.content_seeder import seed_sample_content
+            seed_sample_content()
+            from .services.badge_seeder import seed_badges
+            seed_badges()
+            from .services.story_seeder import seed_sample_story, seed_additional_badges
+            seed_sample_story()
+            seed_additional_badges()
+            from .services.curriculum_scheduler import curriculum_scheduler
+            curriculum_scheduler.start()
 
     return app
 
