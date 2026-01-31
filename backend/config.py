@@ -7,18 +7,18 @@ class BaseConfig:
     # Handle database URL with SSL for PostgreSQL on Render
     database_url = os.environ.get("DATABASE_URL", f"sqlite:///{os.path.abspath('aitutor.db')}")
     if database_url.startswith("postgres://"):
-        # Convert postgres:// to postgresql:// and add SSL mode
         database_url = database_url.replace("postgres://", "postgresql://", 1)
-        # Add SSL mode if not already present
-        if "sslmode" not in database_url:
-            database_url += "?sslmode=require"
-    
+    if database_url.startswith("postgresql://") and "sslmode" not in database_url:
+        # Render Postgres requires SSL; append without breaking existing query params
+        database_url += "&sslmode=require" if "?" in database_url else "?sslmode=require"
+
     SQLALCHEMY_DATABASE_URI = database_url
     SQLALCHEMY_TRACK_MODIFICATIONS = False
-    # Prevent stale DB connections on managed providers
+    # Prevent stale DB connections on managed providers; SSL for Render Postgres
     SQLALCHEMY_ENGINE_OPTIONS = {
         "pool_pre_ping": True,
         "pool_recycle": 300,
+        "connect_args": {"sslmode": "require"} if database_url.startswith("postgresql://") else {},
     }
     JWT_SECRET_KEY = os.environ.get("JWT_SECRET_KEY", "dev-secret")
 
