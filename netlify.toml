@@ -6,7 +6,7 @@
 [build.environment]
   NODE_VERSION = "22"
   NPM_FLAGS = "--foreground-scripts"
-  PIP = ""  # Disable Python environment
+  PYTHON_VERSION = "3.11"
 
 [build.processing.skip]
   skip = []
